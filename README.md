@@ -13,7 +13,7 @@ Sistem informasi pendaftaran mahasiswa baru STMIK-AMIK JAYANUSA yang dibangun me
 
 ## Teknologi yang Digunakan
 
-- Laravel 10 (Backend)
+- Laravel 12 (Backend)
 - React.js + TypeScript (Frontend)
 - Tailwind CSS (Styling)
 - MySQL (Database)
