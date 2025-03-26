@@ -27,7 +27,7 @@ export default function Welcome() {
                     <Hero />
                     <ProgramStudi />
                     <JadwalPerkuliahan />
-                    <ChatAIInfo />
+                                <ChatAIInfo />
                     <SaranaPrasarana />
                     <ProgramBeasiswa />
                     <ProgramKerjasama />

@@ -31,7 +31,7 @@ export default function Hero() {
               </div>
               <div className="relative">
                 <a
-                  href="#info"
+                  href="#chat-ai"
                   className="relative overflow-hidden px-8 py-4 rounded-lg font-semibold text-lg border-2 border-[#02188B] text-[#02188B] transition-all duration-300 hover:bg-[#fff5f5] hover:transform hover:-translate-y-1 inline-block"
                 >
                   Tanya JaVA
@@ -61,7 +61,7 @@ export default function Hero() {
               <img 
                 src={Ambasador}
                 alt="Brand Ambassador STMIK Jayanusa"
-                className="w-full max-w-[500px] transition-transform duration-300 hover:scale-105"
+                className="w-full max-w-[500px] transition-transform duration-300 hover:scale-105 mt-8"
               />
             </div>
           </div>
