@@ -157,3 +157,73 @@
         @apply bg-background text-foreground;
     }
 }
+
+@layer utilities {
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.animate-scroll {
+    animation: scroll 30s linear infinite;
+}
+
+.animate-scroll:hover {
+    animation-play-state: paused;
+}
+
+/* Update carousel styles untuk responsiveness */
+.carousel-container {
+    @apply relative overflow-hidden w-full;
+}
+
+.carousel-content {
+    @apply flex transition-transform duration-300 ease-out;
+}
+
+.carousel-item {
+    @apply flex flex-col items-center flex-shrink-0 px-2 sm:px-3 md:px-4;
+}
+
+.carousel-nav-button {
+    @apply absolute top-1/2 -translate-y-1/2 z-10 
+           bg-white dark:bg-[#161615] rounded-full p-2 
+           shadow-lg hover:bg-gray-100 dark:hover:bg-[#1D0002] 
+           transition-all duration-300
+           text-[#02188B] dark:text-[#FF4433]
+           opacity-75 hover:opacity-100;
+}
+
+.carousel-nav-button-left {
+    @apply left-2 md:left-4;
+}
+
+.carousel-nav-button-right {
+    @apply right-2 md:right-4;
+}
+
+/* Touch device optimization */
+@media (hover: none) {
+    .carousel-container {
+        @apply touch-pan-x;
+    }
+}
+
+/* Prevent text selection during drag */
+.carousel-container {
+    @apply select-none;
+}

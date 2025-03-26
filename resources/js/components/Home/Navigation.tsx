@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { useState } from 'react';
 import { type SharedData } from '@/types';
-import LogoJayanusa from '@/assets/jayanusa.webp';
+import LogoJayanusa from '@/assets/images/home/jayanusa.webp';
 
 interface NavigationProps {
   auth: SharedData['auth'];
@@ -35,9 +35,9 @@ export default function Navigation({ auth }: NavigationProps) {
             <Link href="#jadwal-kuliah" className="text-gray-700 hover:text-[#02188B] px-3 py-2 text-sm font-medium dark:text-gray-200">
               Jadwal Kuliah
             </Link>
-            <Link href="#dokumentasi-beasiswa" className="text-gray-700 hover:text-[#02188B] px-3 py-2 text-sm font-medium dark:text-gray-200">
+            <a href="#beasiswa" className="text-gray-700 hover:text-[#02188B] px-3 py-2 text-sm font-medium dark:text-gray-200">
               Beasiswa
-            </Link>
+            </a>
             <a href="#info" className="text-gray-700 hover:text-[#02188B] px-3 py-2 text-sm font-medium dark:text-gray-200">
               Bantuan
             </a>
@@ -105,9 +105,9 @@ export default function Navigation({ auth }: NavigationProps) {
           <Link href="#jadwal-kuliah" className="block px-3 py-2 rounded-md text-base font-medium text-[#1b1b18] hover:bg-[#FFF2F2] hover:text-[#02188B] dark:text-[#EDEDEC] dark:hover:bg-[#1D0002] dark:hover:text-[#FF4433]">
             Jadwal Kuliah
           </Link>
-          <Link href="#dokumentasi-beasiswa" className="block px-3 py-2 rounded-md text-base font-medium text-[#1b1b18] hover:bg-[#FFF2F2] hover:text-[#02188B] dark:text-[#EDEDEC] dark:hover:bg-[#1D0002] dark:hover:text-[#FF4433]">
+          <a href="#beasiswa" className="block px-3 py-2 rounded-md text-base font-medium text-[#1b1b18] hover:bg-[#FFF2F2] hover:text-[#02188B] dark:text-[#EDEDEC] dark:hover:bg-[#1D0002] dark:hover:text-[#FF4433]">
             Beasiswa
-          </Link>
+          </a>
           <a href="#info" className="block px-3 py-2 rounded-md text-base font-medium text-[#1b1b18] hover:bg-[#FFF2F2] hover:text-[#02188B] dark:text-[#EDEDEC] dark:hover:bg-[#1D0002] dark:hover:text-[#FF4433]">
             Bantuan
           </a>

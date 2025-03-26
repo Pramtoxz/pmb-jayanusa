@@ -1,5 +1,7 @@
 import { Link } from '@inertiajs/react';
-import Ambasador from '@/assets/brandambasador.webp';
+import Ambasador from '@/assets/images/home/brandambasador.webp';
+import JavaAI from '@/assets/images/home/java-ai.json';
+import Lottie from 'lottie-react';
 
 export default function Hero() {
   return (
@@ -18,19 +20,31 @@ export default function Hero() {
               Raih kesempatan untuk menjadi bagian dari perguruan tinggi
               terkemuka di bidang teknologi informasi dan komputer.
             </p>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href={route('register')}
-                className="relative overflow-hidden px-8 py-4 rounded-lg font-semibold text-lg bg-[#02188B] text-white transition-all duration-300 hover:bg-[#D42800] hover:transform hover:-translate-y-1 hover:shadow-lg"
-              >
-                Daftar Sekarang
-              </Link>
-              <a
-                href="#info"
-                className="relative overflow-hidden px-8 py-4 rounded-lg font-semibold text-lg border-2 border-[#02188B] text-[#02188B] transition-all duration-300 hover:bg-[#fff5f5] hover:transform hover:-translate-y-1"
-              >
-                Tanya Java
-              </a>
+            <div className="flex flex-wrap items-center gap-4 relative">
+              <div className="relative">
+                <Link
+                  href={route('register')}
+                  className="relative overflow-hidden px-8 py-4 rounded-lg font-semibold text-lg bg-[#02188B] text-white transition-all duration-300 hover:bg-[#D42800] hover:transform hover:-translate-y-1 hover:shadow-lg inline-block"
+                >
+                  Daftar Sekarang
+                </Link>
+              </div>
+              <div className="relative">
+                <a
+                  href="#info"
+                  className="relative overflow-hidden px-8 py-4 rounded-lg font-semibold text-lg border-2 border-[#02188B] text-[#02188B] transition-all duration-300 hover:bg-[#fff5f5] hover:transform hover:-translate-y-1 inline-block"
+                >
+                  Tanya JaVA
+                </a>
+                <div className="absolute -right-16 -top-16 w-32 h-32 pointer-events-none">
+                  <Lottie
+                    animationData={JavaAI}
+                    loop={true}
+                    autoplay={true}
+                    className="w-full h-full"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           
