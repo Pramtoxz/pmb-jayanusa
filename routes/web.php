@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\ControllerSiswa;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -15,6 +16,10 @@ Route::middleware(['auth'])->group(function () {
             default => abort(403),
         };
     })->name('dashboard');
+
+    Route::get('/siswa/profile', [ControllerSiswa::class, 'index'])->name('siswa.profile');
+
+    Route::post('/pendaftaran', [ControllerSiswa::class, 'store'])->name('siswa.store');
 });
 
 require __DIR__.'/settings.php';

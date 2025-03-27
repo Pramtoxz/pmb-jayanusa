@@ -72,17 +72,17 @@ export default function Navigation({ auth }: NavigationProps) {
             
             {auth.user ? (
               <Link
-                href={route('dashboard')}
+                href={route('siswa.profile')}
                 className="bg-[#02188B] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-[#D42800] dark:bg-[#FF4433] dark:hover:bg-[#E53E2E] transform hover:scale-105"
               >
-                Dashboard
+                Profile
               </Link>
             ) : (
               <Link
-                href={route('register')}
+                href={route('login')}
                 className="bg-[#02188B] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-[#D42800] dark:bg-[#FF4433] dark:hover:bg-[#E53E2E] transform hover:scale-105 hover:shadow-lg"
               >
-                Daftar
+                Login
               </Link>
             )}
           </div>
@@ -138,11 +138,11 @@ export default function Navigation({ auth }: NavigationProps) {
           
           {auth.user ? (
             <Link
-              href={route('dashboard')}
+              href={route('siswa.profile')}
               className="block w-full text-center px-3 py-2 rounded-md text-base font-medium bg-[#02188B] text-white hover:bg-[#D42800] dark:bg-[#FF4433] dark:hover:bg-[#E53E2E] transition-colors duration-200"
               onClick={() => setIsMenuOpen(false)}
             >
-              Dashboard
+              Profile
             </Link>
           ) : (
             <Link

@@ -23,7 +23,7 @@ export default function Hero() {
             <div className="flex flex-wrap items-center gap-4 relative">
               <div className="relative">
                 <Link
-                  href={route('register')}
+                  href={route('siswa.profile')}
                   className="relative overflow-hidden px-8 py-4 rounded-lg font-semibold text-lg bg-[#02188B] text-white transition-all duration-300 hover:bg-[#D42800] hover:transform hover:-translate-y-1 hover:shadow-lg inline-block"
                 >
                   Daftar Sekarang

@@ -52,8 +52,11 @@ const menuItems: MenuItem[] = [
             "2. Cetak bukti registrasinya\n" +
             "3. Bisa transfer ke:\n" +
             `<img src="${Norek}" alt="No. Rekening" style="width: 1000px; height: auto; margin-top: 10px;" />`+
-            "\n\n<strong>Kirim bukti transfer dan dokumennya ke WA kita ya: " +
-            `<span class="text-blue-600 hover:underline"><a href="${getWhatsAppURL()}" target="_blank" rel="noopener noreferrer">0811-6650-635</a></span></strong>`
+            "4. Silahkan Upload bukti transfer di halaman profile ya \n" +
+            "5. Setelah itu kamu hanya perlu menunggu admin untuk menghubungi kamu \n" +
+            "6. Cieee ga Sabar pastinya Ya !!! \n" +
+            "7. Selamat Datang di STMIK-AMIK JAYANUSA"
+
    },
     {
         title: "Berapa ya biaya daftarnya?",
@@ -61,11 +64,18 @@ const menuItems: MenuItem[] = [
         response: "Hai Sobat! JaVA bantu jawab ya! 😊\n\n" +
             "Untuk Biaya pendaftarannya cuma \n"+
             "<span class='text-red-500'>Rp 200.000</span> aja nih\n" +
-            "Bisa transfer ke:\n" +
+            "untuk pendaftaran ada 2 cara ya, yaitu:\n" +
+            "1. <span class='font-bold'>Pendaftaran Offline</span>\n" +
+            "Kamu bisa datang langsung ke front office kampus kami ya\n" +
+            "2. <span class='font-bold'>Pendaftaran Online</span>\n" +
+            "1. Tinggal klik menu 'Pendaftaran Online' terus isi formnya\n" +
+            "2. Cetak bukti registrasinya\n" +
+            "3. Bisa transfer ke:\n" +
             `<img src="${Norek}" alt="No. Rekening" style="width: 1000px; height: auto; margin-top: 10px;" />`+
-            "\n\n<strong>Kirim bukti transfer dan dokumennya ke WA kita ya: " +
-            `<span class="text-blue-600 hover:underline"><a href="${getWhatsAppURL()}" target="_blank" rel="noopener noreferrer">0811-6650-635</a></span></strong>`
-    },
+            "4. Silahkan Upload bukti transfer di halaman profile ya \n" +
+            "5. Setelah itu tunggu admin kami menghubungi kamu \n" +
+            "6. Cieee ga Sabar pastinya Ya !!! \n" +
+            "7. Selamat Datang di STMIK-AMIK JAYANUSA"},
     {
         title: "Jadwal kuliah gimana ya?",
         keywords: ["jadwal", "waktu", "jam", "kuliah", "kelas", "jadwal", "jadwal"],
