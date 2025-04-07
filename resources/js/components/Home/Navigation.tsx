@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import { type SharedData } from '@/types';
 import LogoJayanusa from '@/assets/images/home/jayanusa.webp';
+import { UserCircle } from 'lucide-react';
 
 interface NavigationProps {
   auth: SharedData['auth'];
@@ -73,9 +74,10 @@ export default function Navigation({ auth }: NavigationProps) {
             {auth.user ? (
               <Link
                 href={route('siswa.profile')}
-                className="bg-[#02188B] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-[#D42800] dark:bg-[#FF4433] dark:hover:bg-[#E53E2E] transform hover:scale-105"
+                className="flex items-center gap-2 text-gray-700 hover:text-[#02188B] px-3 py-2 text-sm font-medium transition-colors duration-200 dark:text-gray-200"
               >
-                Profile
+                <UserCircle className="w-5 h-5" />
+                <span>Menu</span>
               </Link>
             ) : (
               <Link
@@ -139,10 +141,11 @@ export default function Navigation({ auth }: NavigationProps) {
           {auth.user ? (
             <Link
               href={route('siswa.profile')}
-              className="block w-full text-center px-3 py-2 rounded-md text-base font-medium bg-[#02188B] text-white hover:bg-[#D42800] dark:bg-[#FF4433] dark:hover:bg-[#E53E2E] transition-colors duration-200"
+              className="flex items-center gap-2 px-3 py-2 rounded-md text-base font-medium text-[#1b1b18] hover:bg-[#FFF2F2] hover:text-[#02188B] dark:text-[#EDEDEC] dark:hover:bg-[#1D0002] dark:hover:text-[#FF4433] transition-colors duration-200"
               onClick={() => setIsMenuOpen(false)}
             >
-              Profile
+              <UserCircle className="w-5 h-5" />
+              <span>Menu</span>
             </Link>
           ) : (
             <Link

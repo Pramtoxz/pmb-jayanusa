@@ -33,7 +33,7 @@ const getWhatsAppURL = () => {
 // Fungsi untuk menganalisis kata kunci
 const analyzeKeywords = (text: string): string[] => {
     const words = text.toLowerCase().split(/\s+/)
-    const commonWords = ['yang', 'dan', 'atau', 'dengan', 'ke', 'di', 'dari', 'untuk', 'pada', 'dalam', 'oleh', 'karena', 'jika', 'maka', 'seperti', 'juga', 'bisa', 'ada', 'ini', 'itu', 'saya', 'anda', 'kamu', 'mereka', 'kita', 'bisa', 'ada', 'sudah', 'belum', 'akan', 'sedang', 'pernah', 'sering', 'jarang', 'selalu', 'kadang', 'mungkin', 'pasti', 'tidak', 'bukan', 'ya', 'tidak', 'apa', 'siapa', 'dimana', 'kapan', 'bagaimana', 'mengapa', 'berapa']
+    const commonWords = ['yang', 'dan', 'atau', 'dengan', 'ke', 'di', 'dari', 'untuk', 'pada', 'dalam', 'oleh', 'karena', 'jika', 'maka', 'seperti', 'juga', 'bisa', 'ada', 'ini', 'itu', 'saya', 'anda', 'kamu', 'mereka', 'kita', 'bisa', 'ada', 'sudah', 'belum', 'akan', 'sedang', 'pernah', 'sering', 'jarang', 'selalu', 'kadang', 'mungkin', 'pasti', 'tidak', 'bukan', 'ya', 'tidak', 'apa', 'siapa', 'dimana', 'kapan', 'bagaimana', 'mengapa', 'berapa', 'gak', 'ada', 'program']
     
     return words.filter(word => 
         word.length > 2 && 
@@ -90,13 +90,18 @@ const menuItems: MenuItem[] = [
     },
     {
         title: "Pengen ngobrol sama Admin nih",
-        keywords: ["admin", "cs", "customer service", "hubungi", "kontak", "wa", "whatsapp"],
+        keywords: ["admin", "cs", "customer service", "hubungi", "kontak", "wa", "whatsapp", "tanya", "info"],
         response: "Hai Sobat! JaVA bantu hubungin ke admin ya! 👋\n\n" +
-            "Langsung aja klik nomor WA admin kita:\n\n" +
-                   `<span class="text-blue-600 hover:underline"><a href="${getWhatsAppURL()}" target="_blank" rel="noopener noreferrer">0811-6650-635</a></span>\n\n` +
-                   "Admin online di jam:\n" +
-                   "Senin - Jumat: 09.30 - 18.30\n" +
-                   "Sabtu: 09.30 - 18.00"
+            "Kamu bisa hubungi admin kami melalui:\n\n" +
+            "📞 Telepon/WA:\n" +
+            `<span class="text-blue-600 hover:underline"><a href="${getWhatsAppURL()}" target="_blank" rel="noopener noreferrer">0811-6650-635</a></span>\n\n` +
+            "⏰ Jam Operasional:\n" +
+            "• Senin - Jumat: 09.30 - 18.30\n" +
+            "• Sabtu: 09.30 - 18.00\n\n" +
+            "🏢 Atau kunjungi kampus kami di:\n" +
+            "• Gedung A: Jl. Damar No.69 E Padang\n" +
+            "• Gedung B: Jl. Olo Ladang No.1 Padang\n\n" +
+            "Admin kami siap membantu semua pertanyaanmu! 😊"
     },
     {
         title: "Apa aja sih UKM di Jayanusa?",
@@ -173,17 +178,21 @@ const menuItems: MenuItem[] = [
     },
     {
         title: "Ada program beasiswa gak?",
-        keywords: ["beasiswa", "scholarship", "bantuan", "biaya", "study", "luar negeri", "international"],
-        response: "Hai Sobat! JAVA kasih tau program beasiswa internasional kita ya! 🌏\n\n" +
-            "Jayanusa punya kerjasama beasiswa dengan berbagai negara:\n\n" +
-            "1. Beasiswa Australia 🦘\n" +
-            "2. Beasiswa Jepang 🗾\n" +
-            "3. Beasiswa Malaysia 🇲🇾\n" +
-            "4. Beasiswa Thailand 🇹🇭\n\n" +
-            "Keuntungan beasiswa:\n" +
-            "✨ Beasiswa Penuh\n" +
-            "✨ Kerjasama dengan universitas terkemuka\n" +
-            "✨ Termasuk akomodasi dan tunjangan hidup\n\n" +
+        keywords: ["beasiswa", "scholarship", "bantuan", "biaya", "kip", "kuliah", "prestasi"],
+        response: "Hai Sobat! JAVA kasih tau program beasiswa kita ya! \n\n" +
+            "Di STMIK-AMIK JAYANUSA ada beberapa program beasiswa:\n\n" +
+            "1. KIP-Kuliah 📚\n" +
+            "   • Beasiswa dari Pemerintah\n" +
+            "   • Mencakup biaya kuliah penuh\n" +
+            "   • Untuk mahasiswa kurang mampu\n\n" +
+            "2. Beasiswa Prestasi 🏆\n" +
+            "   • Untuk mahasiswa berprestasi\n" +
+            "   • Potongan UKT hingga 100%\n\n" +
+            "3. Program Kerjasama Internasional 🌏\n" +
+            "   • Australia\n" +
+            "   • Jepang\n" +
+            "   • Malaysia\n" +
+            "   • Thailand\n\n" +
             "Mau info lebih detail? Langsung aja hubungi admin kita:\n" +
             `<span class="text-blue-600 hover:underline"><a href="${getWhatsAppURL()}" target="_blank" rel="noopener noreferrer">0811-6650-635</a></span>`
     },
@@ -233,22 +242,35 @@ export default function ChatAIInfo() {
     }, [messages, isAITyping])
 
     const findBestMatch = (text: string): MenuItem | null => {
-        const userKeywords = analyzeKeywords(text)
+        const userText = text.toLowerCase()
+        
+        // Cek judul pertanyaan terlebih dahulu
+        const exactMatch = menuItems.find(item => 
+            userText.includes(item.title.toLowerCase())
+        )
+        if (exactMatch) {
+            return exactMatch
+        }
+
+        const userKeywords = analyzeKeywords(userText)
         let bestMatch: MenuItem | null = null
         let maxMatches = 0
 
-        for (const item of menuItems) {
-            const matches = userKeywords.filter(keyword => 
-                item.keywords.some(itemKeyword => 
-                    itemKeyword.includes(keyword) || keyword.includes(itemKeyword)
-                )
-            ).length
+        menuItems.forEach(item => {
+            const matches = item.keywords.reduce((count, keyword) => {
+                if (userKeywords.some(userWord => 
+                    userWord.includes(keyword) || keyword.includes(userWord)
+                )) {
+                    return count + 1
+                }
+                return count
+            }, 0)
 
             if (matches > maxMatches) {
                 maxMatches = matches
                 bestMatch = item
             }
-        }
+        })
 
         return maxMatches > 0 ? bestMatch : null
     }

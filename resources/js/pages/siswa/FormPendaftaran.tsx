@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { router } from '@inertiajs/react';
-import axios from 'axios';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -35,6 +34,10 @@ interface FormData {
   fotoPreview: string | null;
   beasiswa: string;
   kelas: string;
+}
+
+interface ValidationErrors {
+  [key: string]: string;
 }
 
 interface Props {
@@ -103,22 +106,33 @@ export default function FormPendaftaran({ initialData, onSuccess }: Props) {
     setErrors({});
 
     const formDataToSend = new FormData();
+    
+    // Append semua field kecuali foto dan fotoPreview
     Object.entries(formData).forEach(([key, value]) => {
-      if (value !== null) {
+      if (key !== 'foto' && key !== 'fotoPreview' && value !== null) {
         formDataToSend.append(key, value);
       }
     });
 
+    // Append foto secara terpisah jika ada
+    if (formData.foto instanceof File) {
+      formDataToSend.append('foto', formData.foto);
+    }
+
     try {
-      const url = initialData ? `/pendaftaran/${initialData.nik}` : '/pendaftaran';
-      const method = initialData ? 'put' : 'post';
-      
-      await router[method](url, formDataToSend);
-      onSuccess?.();
+      await router.post('/pendaftaran', formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        onSuccess: () => {
+          onSuccess?.();
+        },
+        onError: (errors: ValidationErrors) => {
+          setErrors(errors);
+        },
+      });
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        setErrors(error.response.data.errors);
-      }
+      console.error('Error submitting form:', error);
     } finally {
       setIsSubmitting(false);
     }

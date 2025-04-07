@@ -4,6 +4,7 @@ import { Head, Link } from '@inertiajs/react';
 import { Button } from "@/components/ui/button";
 import { Pencil, ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import Sidebar from '@/components/Siswa/Sidebar';
 
 interface SiswaData {
   nik: string;
@@ -59,7 +60,9 @@ export default function SiswaProfile({ siswa }: Props) {
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-primary">Data Mahasiswa</h2>
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+            Data Calon Mahasiswa
+          </h2>
             <p className="text-sm text-muted-foreground">Informasi data diri mahasiswa</p>
           </div>
           <Button
@@ -225,72 +228,80 @@ export default function SiswaProfile({ siswa }: Props) {
       </Head>
       
       <div className="container max-w-7xl mx-auto py-10 px-4 sm:px-6">
-        {/* Tombol Kembali ke Home */}
-        <div className="mb-6">
-          <Link href="/">
-            <Button
-              variant="ghost"
-              className="flex items-center gap-2 hover:bg-muted"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Kembali ke Beranda
-            </Button>
-          </Link>
-        </div>
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Sidebar */}
+          <Sidebar activePage="profile" />
 
-        <Card>
-          <CardContent className="p-6">
-            {!siswa || isEditing ? (
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <Button
-                    variant="ghost"
-                    onClick={() => setIsEditing(false)}
-                    className="hover:bg-muted"
-                    disabled={!siswa}
-                  >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Kembali
-                  </Button>
-                  <div>
-                    <h2 className="text-2xl font-bold text-primary">
-                      {siswa ? 'Edit Data Mahasiswa' : 'Pendaftaran Mahasiswa Baru'}
-                    </h2>
-                    <p className="text-sm text-muted-foreground">
-                      {siswa ? 'Perbarui informasi data diri mahasiswa' : 'Silakan lengkapi form pendaftaran berikut'}
-                    </p>
+          {/* Main Content */}
+          <div className="flex-1">
+            {/* Tombol Kembali ke Home */}
+            <div className="mb-6">
+              <Link href="/">
+                <Button
+                  variant="ghost"
+                  className="flex items-center gap-2 hover:bg-muted"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Kembali ke Beranda
+                </Button>
+              </Link>
+            </div>
+
+            <Card>
+              <CardContent className="p-6">
+                {!siswa || isEditing ? (
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-4">
+                      <Button
+                        variant="ghost"
+                        onClick={() => setIsEditing(false)}
+                        className="hover:bg-muted"
+                        disabled={!siswa}
+                      >
+                        <ArrowLeft className="w-4 h-4 mr-2" />
+                        Kembali
+                      </Button>
+                      <div>
+                        <h2 className="text-2xl font-bold text-primary">
+                          {siswa ? 'Edit Data Mahasiswa' : 'Pendaftaran Mahasiswa Baru'}
+                        </h2>
+                        <p className="text-sm text-muted-foreground">
+                          {siswa ? 'Perbarui informasi data diri mahasiswa' : 'Silakan lengkapi form pendaftaran berikut'}
+                        </p>
+                      </div>
+                    </div>
+                    <FormPendaftaran 
+                      initialData={siswa ? {
+                        nik: siswa.nik,
+                        nama: siswa.nama,
+                        alamat: siswa.alamat,
+                        tempat_lahir: siswa.tempat_lahir,
+                        tanggal_lahir: siswa.tanggal_lahir,
+                        jenis_kelamin: siswa.jenis_kelamin,
+                        kota: siswa.kota,
+                        kecamatan: siswa.kecamatan,
+                        kelurahan: siswa.kelurahan,
+                        provinsi: siswa.provinsi,
+                        agama: siswa.agama,
+                        no_hp: siswa.no_hp,
+                        asal_sekolah: siswa.asal_sekolah,
+                        tahun_lulus: siswa.tahun_lulus,
+                        program_studi: siswa.program_studi,
+                        foto: null,
+                        fotoPreview: siswa.foto,
+                        beasiswa: siswa.beasiswa,
+                        kelas: siswa.kelas
+                      } : undefined}
+                      onSuccess={handleEditSuccess}
+                    />
                   </div>
-                </div>
-                <FormPendaftaran 
-                  initialData={siswa ? {
-                    nik: siswa.nik,
-                    nama: siswa.nama,
-                    alamat: siswa.alamat,
-                    tempat_lahir: siswa.tempat_lahir,
-                    tanggal_lahir: siswa.tanggal_lahir,
-                    jenis_kelamin: siswa.jenis_kelamin,
-                    kota: siswa.kota,
-                    kecamatan: siswa.kecamatan,
-                    kelurahan: siswa.kelurahan,
-                    provinsi: siswa.provinsi,
-                    agama: siswa.agama,
-                    no_hp: siswa.no_hp,
-                    asal_sekolah: siswa.asal_sekolah,
-                    tahun_lulus: siswa.tahun_lulus,
-                    program_studi: siswa.program_studi,
-                    foto: null,
-                    fotoPreview: siswa.foto,
-                    beasiswa: siswa.beasiswa,
-                    kelas: siswa.kelas
-                  } : undefined}
-                  onSuccess={handleEditSuccess}
-                />
-              </div>
-            ) : (
-              renderProfile()
-            )}
-          </CardContent>
-        </Card>
+                ) : (
+                  renderProfile()
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </>
   );

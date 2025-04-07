@@ -72,7 +72,7 @@ export default function ProgramBeasiswa() {
                                     href="#info" 
                                     className="inline-flex items-center px-6 py-3 bg-[#02188B] dark:bg-[#FF4433] text-white rounded-full hover:bg-[#021070] dark:hover:bg-[#E53E2E] transition-colors duration-300"
                                 >
-                                    <span>Pelajari Lebih Lanjut</span>
+                                    <span>Daftar Sekarang</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                     </svg>
