@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import {  LayoutGrid, CreditCard, Users } from 'lucide-react';
+import {  LayoutGrid, CreditCard, Users, FileText } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -23,7 +23,16 @@ const mainNavItems: NavItem[] = [
         href: '/pembayaran',
         icon: CreditCard,
     },
-    
+    {
+        title: 'Laporan Pembayaran',
+        href: '/laporan',
+        icon: FileText,
+    },
+    {
+        title: 'Laporan Siswa',
+        href: '/laporan/siswa',
+        icon: FileText,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

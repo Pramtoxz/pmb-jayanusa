@@ -6,25 +6,15 @@ use App\Http\Controllers\ControllerSiswa;
 use App\Http\Controllers\CalonMahasiswaController;
 use App\Http\Controllers\PembayaranController;
 use Telegram\Bot\Laravel\Facades\Telegram;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LaporanController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('dashboard', function (\Illuminate\Http\Request $request) {
-        return match ($request->user()->role) {
-            'admin' => Inertia::render('dashboard', [
-                'stats' => [
-                    'total_pendaftar' => \App\Models\Siswa::count(),
-                    'pembayaran_pending' => \App\Models\Pembayaran::where('status', 'menunggu')->count(),
-                    'pembayaran_diterima' => \App\Models\Pembayaran::where('status', 'dibayar')->count(),
-                ]
-            ]),
-            'user' => redirect()->route('home'),
-            default => abort(403),
-        };
-    })->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
     Route::get('/siswa/profile', [ControllerSiswa::class, 'index'])->name('siswa.profile');
 
@@ -47,6 +37,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pembayaran/{pembayaran}', [PembayaranController::class, 'show'])->name('pembayaran.show');
         Route::put('/pembayaran/{pembayaran}', [PembayaranController::class, 'update'])->name('pembayaran.update');
         Route::post('/pembayaran/{pembayaran}/suratlulus', [PembayaranController::class, 'uploadSuratLulus'])->name('pembayaran.uploadSuratLulus');
+        
+        // Laporan Routes
+        Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+        Route::get('/laporan/periode', [LaporanController::class, 'index'])->name('laporan.index');
+        Route::post('/laporan/periode', [LaporanController::class, 'periode'])->name('laporan.periode');
+        Route::post('/laporan/download-pdf', [LaporanController::class, 'downloadPdf'])->name('laporan.download-pdf');
+        Route::get('/laporan/siswa', [LaporanController::class, 'siswa'])->name('laporan.siswa');
+        Route::post('/laporan/siswa', [LaporanController::class, 'siswa'])->name('laporan.siswa.filter');
+        Route::post('/laporan/siswa/download-pdf', [LaporanController::class, 'downloadPdfSiswa'])->name('laporan.siswa.download-pdf');
     });
 
     // Route untuk Telegram
