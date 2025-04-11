@@ -2,9 +2,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import FormPendaftaran from './FormPendaftaran';
 import { Head, Link } from '@inertiajs/react';
 import { Button } from "@/components/ui/button";
-import { Pencil, ArrowLeft } from "lucide-react";
+import { Pencil, ArrowLeft, AlertCircle, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import Sidebar from '@/components/Siswa/Sidebar';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface SiswaData {
   nik: string;
@@ -39,10 +40,10 @@ interface Props {
 
 export default function SiswaProfile({ siswa }: Props) {
   const [isEditing, setIsEditing] = useState(false);
-
-  const handleEditSuccess = () => {
-    setIsEditing(false);
-  };
+  const [alert] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString('id-ID', {
@@ -234,6 +235,25 @@ export default function SiswaProfile({ siswa }: Props) {
 
           {/* Main Content */}
           <div className="flex-1">
+            {/* Alert Messages */}
+            {alert.type && (
+              <div className="mb-6">
+                <Alert variant={alert.type === 'error' ? 'destructive' : 'default'}>
+                  {alert.type === 'error' ? (
+                    <AlertCircle className="h-4 w-4" />
+                  ) : (
+                    <CheckCircle2 className="h-4 w-4" />
+                  )}
+                  <AlertTitle>
+                    {alert.type === 'error' ? 'Error' : 'Sukses'}
+                  </AlertTitle>
+                  <AlertDescription>
+                    {alert.message}
+                  </AlertDescription>
+                </Alert>
+              </div>
+            )}
+
             {/* Tombol Kembali ke Home */}
             <div className="mb-6">
               <Link href="/">
@@ -292,7 +312,6 @@ export default function SiswaProfile({ siswa }: Props) {
                         beasiswa: siswa.beasiswa,
                         kelas: siswa.kelas
                       } : undefined}
-                      onSuccess={handleEditSuccess}
                     />
                   </div>
                 ) : (

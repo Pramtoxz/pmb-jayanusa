@@ -20,17 +20,12 @@ interface MenuItem {
 
 const defaultWhatsAppMessage = "Halo! CS Jayanusa, Sesuai instruksi JaVA saya ingin menanyakan hal yang lebih spesifik"
 
-// Fungsi untuk membuat URL WhatsApp yang valid
 const getWhatsAppURL = () => {
-    // Encode pesan untuk URL
     const encodedMessage = encodeURIComponent(defaultWhatsAppMessage)
-    // Format nomor telepon (hilangkan karakter selain angka)
     const phoneNumber = "628116650635"
-    // Buat URL WhatsApp dengan format yang benar
     return `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`
 }
 
-// Fungsi untuk menganalisis kata kunci
 const analyzeKeywords = (text: string): string[] => {
     const words = text.toLowerCase().split(/\s+/)
     const commonWords = ['yang', 'dan', 'atau', 'dengan', 'ke', 'di', 'dari', 'untuk', 'pada', 'dalam', 'oleh', 'karena', 'jika', 'maka', 'seperti', 'juga', 'bisa', 'ada', 'ini', 'itu', 'saya', 'anda', 'kamu', 'mereka', 'kita', 'bisa', 'ada', 'sudah', 'belum', 'akan', 'sedang', 'pernah', 'sering', 'jarang', 'selalu', 'kadang', 'mungkin', 'pasti', 'tidak', 'bukan', 'ya', 'tidak', 'apa', 'siapa', 'dimana', 'kapan', 'bagaimana', 'mengapa', 'berapa', 'gak', 'ada', 'program']
@@ -218,7 +213,6 @@ const menuItems: MenuItem[] = [
     }
 ]
 
-// Tambahkan fungsi untuk memutar suara
 const playMessageSound = () => {
     const audio = new Audio(messageSound)
     audio.play()
@@ -243,8 +237,6 @@ export default function ChatAIInfo() {
 
     const findBestMatch = (text: string): MenuItem | null => {
         const userText = text.toLowerCase()
-        
-        // Cek judul pertanyaan terlebih dahulu
         const exactMatch = menuItems.find(item => 
             userText.includes(item.title.toLowerCase())
         )
@@ -292,8 +284,6 @@ export default function ChatAIInfo() {
                 response = 'Yahhh :( \n\nSayangnya,JaVA tidak memahami pertanyaan Anda... \n\n Tenang saja, jika pertanyaan kamu masih belum terjawab sempurna, jangan sungkan untuk menghubungi Admin kami melalui WhatsApp: \n\n' +
                     `<a href="${getWhatsAppURL()}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">0811-6650-635</a>`
             }
-            
-            // Mainkan suara hanya saat AI merespons
             playMessageSound()
             
             setIsAITyping(false)
@@ -317,7 +307,6 @@ export default function ChatAIInfo() {
                 </div>
 
                 <div className="w-full max-w-2xl mx-auto bg-white dark:bg-[#161615] rounded-2xl shadow-lg border dark:border-gray-800">
-                    {/* Header dengan branding JaVA */}
                     <div className="p-4 border-b dark:border-gray-800 flex items-center gap-3">
                         <Avatar className="h-10 w-10">
                             <img 
@@ -332,7 +321,6 @@ export default function ChatAIInfo() {
                         </div>
                     </div>
 
-                    {/* Chat Area dengan height yang sedikit lebih tinggi */}
                     <div ref={chatContainerRef} className="h-[350px] overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
                         <div className="space-y-3">
                             {messages.map((message, i) => (
@@ -385,7 +373,6 @@ export default function ChatAIInfo() {
                         </div>
                     </div>
 
-                    {/* Suggested Questions dengan layout yang lebih compact */}
                     <div className="p-3 border-t border-b dark:border-gray-800 bg-gradient-to-r from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
                         <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 font-medium">Tanyakan pada JaVA:</p>
                         <div className="flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
@@ -401,7 +388,6 @@ export default function ChatAIInfo() {
                         </div>
                     </div>
 
-                    {/* Input Area yang lebih compact */}
                     <div className="p-3">
                         <div className="flex gap-2">
                             <Input

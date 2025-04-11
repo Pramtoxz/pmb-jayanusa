@@ -55,8 +55,6 @@ class ControllerSiswa extends Controller
 
             $data = $request->except('foto');
             $data['id_user'] = $request->user()->id;
-
-            // Handle foto
             if ($request->hasFile('foto')) {
                 $foto = $request->file('foto');
                 $fotoPath = $foto->store('foto_siswa', 'public');
@@ -69,16 +67,12 @@ class ControllerSiswa extends Controller
             }
 
             if ($siswa) {
-                // Update
                 $siswa->update($data);
             } else {
-                // Create siswa terlebih dahulu
                 $siswa = Siswa::create($data);
-
-                // Buat satu pembayaran untuk biaya pendaftaran
                 Pembayaran::create([
                     'kode_pembayaran' => 'PMB-' . date('Y') . '-' . str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT),
-                    'jumlah' => 200000, // Biaya pendaftaran 200rb
+                    'jumlah' => 200000,
                     'status' => 'menunggu',
                     'nik_siswa' => $request->nik,
                     'keterangan' => 'Biaya Pendaftaran Mahasiswa Baru'
@@ -125,8 +119,6 @@ class ControllerSiswa extends Controller
             DB::beginTransaction();
             
             $pembayaran = Pembayaran::findOrFail($request->pembayaran_id);
-            
-            // Verifikasi bahwa pembayaran ini milik siswa yang sedang login
             $siswa = Siswa::where('id_user', $request->user()->id)->first();
 
             if (!$siswa) {
@@ -136,24 +128,16 @@ class ControllerSiswa extends Controller
             if ($pembayaran->nik_siswa != $siswa->nik) {
                 throw new \Exception('Data pembayaran tidak sesuai');
             }
-            
-            // Hapus file lama jika ada
             if ($pembayaran->bukti_pembayaran) {
                 $oldPath = str_replace('/storage/', '', $pembayaran->bukti_pembayaran);
                 Storage::disk('public')->delete($oldPath);
             }
-
-            // Upload file baru
             $file = $request->file('bukti_pembayaran');
             $filename = 'bukti_' . time() . '_' . $pembayaran->kode_pembayaran . '.' . $file->getClientOriginalExtension();
-            
-            // Pastikan folder exists
             Storage::disk('public')->makeDirectory('bukti_pembayaran');
             
-            // Simpan file
             $path = $file->storeAs('bukti_pembayaran', $filename, 'public');
             
-            // Update database
             $pembayaran->update([
                 'bukti_pembayaran' => '/storage/' . $path,
                 'status' => 'menunggu',
@@ -187,13 +171,10 @@ class ControllerSiswa extends Controller
         }
     }
 
-    /**
-     * Upload SKL dalam bentuk PDF
-     */
     public function uploadSKL(Request $request)
     {
         $request->validate([
-            'skl' => 'required|mimes:pdf|max:5120', // Maksimal 5MB
+            'skl' => 'required|mimes:pdf|max:5120',
             'pembayaran_id' => 'required|exists:pembayaran,id'
         ]);
 
@@ -202,7 +183,7 @@ class ControllerSiswa extends Controller
             
             $pembayaran = Pembayaran::findOrFail($request->pembayaran_id);
             
-            // Verifikasi bahwa pembayaran ini milik siswa yang sedang login
+           
             $siswa = Siswa::where('id_user', $request->user()->id)->first();
 
             if (!$siswa) {
@@ -212,29 +193,19 @@ class ControllerSiswa extends Controller
             if ($pembayaran->nik_siswa != $siswa->nik) {
                 throw new \Exception('Data pembayaran tidak sesuai');
             }
-            
-            // Hapus file lama jika ada
             if ($pembayaran->skl) {
                 $oldPath = str_replace('/storage/', '', $pembayaran->skl);
                 Storage::disk('public')->delete($oldPath);
             }
-
-            // Upload file SKL baru
             $file = $request->file('skl');
             $filename = 'skl_' . time() . '_' . $siswa->nik . '.' . $file->getClientOriginalExtension();
-            
-            // Pastikan folder exists
             Storage::disk('public')->makeDirectory('dokumen_siswa');
             
-            // Simpan file
             $path = $file->storeAs('dokumen_siswa', $filename, 'public');
             
-            // Update database
             $pembayaran->update([
                 'skl' => '/storage/' . $path
             ]);
-
-            // Notifikasi Telegram dihapus
 
             DB::commit();
             return back()->with('message', 'Dokumen SKL berhasil diupload');
@@ -248,13 +219,10 @@ class ControllerSiswa extends Controller
         }
     }
 
-    /**
-     * Upload Rapor dalam bentuk PDF
-     */
     public function uploadRapor(Request $request)
     {
         $request->validate([
-            'rapor' => 'required|mimes:pdf|max:5120', // Maksimal 5MB
+            'rapor' => 'required|mimes:pdf|max:5120', 
             'pembayaran_id' => 'required|exists:pembayaran,id'
         ]);
 
@@ -263,7 +231,6 @@ class ControllerSiswa extends Controller
             
             $pembayaran = Pembayaran::findOrFail($request->pembayaran_id);
             
-            // Verifikasi bahwa pembayaran ini milik siswa yang sedang login
             $siswa = Siswa::where('id_user', $request->user()->id)->first();
 
             if (!$siswa) {
@@ -273,29 +240,19 @@ class ControllerSiswa extends Controller
             if ($pembayaran->nik_siswa != $siswa->nik) {
                 throw new \Exception('Data pembayaran tidak sesuai');
             }
-            
-            // Hapus file lama jika ada
             if ($pembayaran->rapor) {
                 $oldPath = str_replace('/storage/', '', $pembayaran->rapor);
                 Storage::disk('public')->delete($oldPath);
             }
 
-            // Upload file Rapor baru
             $file = $request->file('rapor');
             $filename = 'rapor_' . time() . '_' . $siswa->nik . '.' . $file->getClientOriginalExtension();
             
-            // Pastikan folder exists
             Storage::disk('public')->makeDirectory('dokumen_siswa');
-            
-            // Simpan file
             $path = $file->storeAs('dokumen_siswa', $filename, 'public');
-            
-            // Update database
             $pembayaran->update([
                 'rapor' => '/storage/' . $path
             ]);
-
-            // Notifikasi Telegram dihapus
 
             DB::commit();
             return back()->with('message', 'Dokumen Rapor berhasil diupload');

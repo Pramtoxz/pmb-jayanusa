@@ -15,30 +15,19 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
     Route::get('/siswa/profile', [ControllerSiswa::class, 'index'])->name('siswa.profile');
-
     Route::post('/pendaftaran', [ControllerSiswa::class, 'store'])->name('siswa.store');
-
     Route::get('/siswa/pembayaran', [ControllerSiswa::class, 'pembayaran'])->name('siswa.pembayaran');
-
     Route::post('/siswa/pembayaran/upload', [ControllerSiswa::class, 'uploadBuktiPembayaran'])->name('siswa.pembayaran.upload');
-
-    // Menambahkan route untuk upload SKL
     Route::post('/siswa/skl/upload', [ControllerSiswa::class, 'uploadSKL'])->name('siswa.skl.upload');
-
-    // Menambahkan route untuk upload Rapor
     Route::post('/siswa/rapor/upload', [ControllerSiswa::class, 'uploadRapor'])->name('siswa.rapor.upload');
 
-    // Admin Routes
     Route::middleware('admin')->group(function () {
         Route::resource('calon-mahasiswa', CalonMahasiswaController::class);
         Route::get('/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran.index');
         Route::get('/pembayaran/{pembayaran}', [PembayaranController::class, 'show'])->name('pembayaran.show');
         Route::put('/pembayaran/{pembayaran}', [PembayaranController::class, 'update'])->name('pembayaran.update');
         Route::post('/pembayaran/{pembayaran}/suratlulus', [PembayaranController::class, 'uploadSuratLulus'])->name('pembayaran.uploadSuratLulus');
-        
-        // Laporan Routes
         Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
         Route::get('/laporan/periode', [LaporanController::class, 'index'])->name('laporan.index');
         Route::post('/laporan/periode', [LaporanController::class, 'periode'])->name('laporan.periode');

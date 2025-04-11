@@ -25,7 +25,6 @@ class LaporanController extends Controller
             'program_studi' => 'nullable|string|in:MI,SI,SK,all'
         ]);
 
-        // Format tanggal ke Y-m-d H:i:s
         $tanggalAwal = $request->tanggal_awal . ' 00:00:00';
         $tanggalAkhir = $request->tanggal_akhir . ' 23:59:59';
 
@@ -38,13 +37,9 @@ class LaporanController extends Controller
 
         $query = Pembayaran::with('siswa')
             ->whereBetween('created_at', [$tanggalAwal, $tanggalAkhir]);
-
-        // Hanya filter status jika status ada dan bukan 'all'
         if ($request->has('status') && $request->status && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
-
-        // Hanya filter program studi jika program_studi ada dan bukan 'all'
         if ($request->has('program_studi') && $request->program_studi && $request->program_studi !== 'all') {
             $query->whereHas('siswa', function($q) use ($request) {
                 $q->where('program_studi', $request->program_studi);
@@ -79,13 +74,9 @@ class LaporanController extends Controller
                 $request->tanggal_akhir . ' 23:59:59'
             ]);
         }
-
-        // Hanya filter kelas jika kelas ada dan bukan 'all'
         if ($request->has('kelas') && $request->kelas && $request->kelas !== 'all') {
             $query->where('kelas', $request->kelas);
         }
-
-        // Hanya filter program studi jika program_studi ada dan bukan 'all'
         if ($request->has('program_studi') && $request->program_studi && $request->program_studi !== 'all') {
             $query->where('program_studi', $request->program_studi);
         }

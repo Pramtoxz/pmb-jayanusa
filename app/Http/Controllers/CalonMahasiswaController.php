@@ -32,6 +32,7 @@ class CalonMahasiswaController extends Controller
                     'kelas' => $siswa->kelas,
                     'beasiswa' => $siswa->beasiswa,
                     'status_pembayaran' => $siswa->pembayaran->first()?->status ?? 'belum ada',
+                    'suratlulus' => $siswa->pembayaran->first()?->suratlulus,
                     'created_at' => $siswa->created_at->format('d M Y'),
                 ];
             });
@@ -73,6 +74,7 @@ class CalonMahasiswaController extends Controller
                     'bukti' => $p->bukti_pembayaran,
                     'skl' => $p->skl,
                     'rapor' => $p->rapor,
+                    'suratlulus' => $p->suratlulus,
                     'keterangan' => $p->keterangan,
                     'tanggal' => $p->created_at->format('d M Y'),
                 ])
@@ -118,14 +120,10 @@ class CalonMahasiswaController extends Controller
             DB::beginTransaction();
 
             $data = $request->except('foto');
-
-            // Handle foto
             if ($request->hasFile('foto')) {
                 $foto = $request->file('foto');
                 $fotoPath = $foto->store('foto_siswa', 'public');
                 $data['foto'] = '/storage/' . $fotoPath;
-
-                // Hapus foto lama
                 if ($calonMahasiswa->foto) {
                     Storage::disk('public')->delete(str_replace('/storage/', '', $calonMahasiswa->foto));
                 }
@@ -192,8 +190,6 @@ class CalonMahasiswaController extends Controller
 
         try {
             DB::beginTransaction();
-
-            // Buat user baru
             $user = User::create([
                 'name' => $request->nama,
                 'email' => $request->nik . '@jayanusa.ac.id',

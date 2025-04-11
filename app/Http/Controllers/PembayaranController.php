@@ -74,18 +74,15 @@ class PembayaranController extends Controller
     public function uploadSuratLulus(Request $request, Pembayaran $pembayaran)
     {
         $request->validate([
-            'suratlulus' => 'required|file|mimes:pdf|max:5120', // Max 5MB
+            'suratlulus' => 'required|file|mimes:pdf|max:5120',
         ]);
 
-        // Hapus file lama jika ada
         if ($pembayaran->suratlulus) {
             Storage::disk('public')->delete(str_replace('/storage/', '', $pembayaran->suratlulus));
         }
-
-        // Upload file baru
+        
         $path = $request->file('suratlulus')->store('surat_lulus', 'public');
         
-        // Update database
         $pembayaran->update([
             'suratlulus' => '/storage/' . $path
         ]);

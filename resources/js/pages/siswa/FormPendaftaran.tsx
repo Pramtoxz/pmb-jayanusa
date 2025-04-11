@@ -3,6 +3,8 @@ import { router } from '@inertiajs/react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import {
   Select,
   SelectContent,
@@ -36,16 +38,11 @@ interface FormData {
   kelas: string;
 }
 
-interface ValidationErrors {
-  [key: string]: string;
-}
-
 interface Props {
   initialData?: FormData;
-  onSuccess?: () => void;
 }
 
-export default function FormPendaftaran({ initialData, onSuccess }: Props) {
+export default function FormPendaftaran({ initialData }: Props) {
   const [formData, setFormData] = useState<FormData>(initialData || {
     nik: '',
     nama: '',
@@ -68,8 +65,8 @@ export default function FormPendaftaran({ initialData, onSuccess }: Props) {
     kelas: '',
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors] = useState<Partial<Record<keyof FormData, string>>>({});
+  const [isSubmitting] = useState(false);
   const [availableCities, setAvailableCities] = useState<string[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -102,40 +99,30 @@ export default function FormPendaftaran({ initialData, onSuccess }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setErrors({});
 
     const formDataToSend = new FormData();
     
-    // Append semua field kecuali foto dan fotoPreview
     Object.entries(formData).forEach(([key, value]) => {
       if (key !== 'foto' && key !== 'fotoPreview' && value !== null) {
         formDataToSend.append(key, value);
       }
     });
 
-    // Append foto secara terpisah jika ada
     if (formData.foto instanceof File) {
       formDataToSend.append('foto', formData.foto);
     }
 
-    try {
-      await router.post('/pendaftaran', formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        onSuccess: () => {
-          onSuccess?.();
-        },
-        onError: (errors: ValidationErrors) => {
-          setErrors(errors);
-        },
-      });
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    router.post('/pendaftaran', formDataToSend, {
+      onError: (errors: Record<string, string>) => {
+        const errorMessage = Object.values(errors)[0] || 'Silakan lengkapi semua field yang diperlukan';
+        Swal.fire({
+          icon: 'error',
+          title: 'Validasi Error',
+          text: errorMessage,
+          confirmButtonColor: '#d33'
+        });
+      }
+    });
   };
 
   return (
@@ -490,7 +477,12 @@ export default function FormPendaftaran({ initialData, onSuccess }: Props) {
                   name="beasiswa" 
                   value={formData.beasiswa}
                   onValueChange={(value) => 
-                    setFormData(prev => ({ ...prev, beasiswa: value }))
+                    setFormData(prev => ({ 
+                      ...prev, 
+                      beasiswa: value,
+                      // Set kelas menjadi reguler jika beasiswa = iya (KIP)
+                      kelas: value === 'iya' ? 'reguler' : prev.kelas 
+                    }))
                   }
                 >
                   <SelectTrigger className="transition-colors duration-200 focus:border-primary">

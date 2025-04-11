@@ -61,6 +61,7 @@ interface CalonMahasiswa {
     kelas: string;
     beasiswa: string;
     status_pembayaran: string;
+    suratlulus: string | null;
     created_at: string;
 }
 
@@ -160,6 +161,22 @@ const columns: ColumnDef<CalonMahasiswa>[] = [
             return (
                 <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusBadgeStyle(status)}`}>
                     {status}
+                </span>
+            )
+        },
+    },
+    {
+        accessorKey: "suratlulus",
+        header: "Surat Lulus",
+        cell: ({ row }) => {
+            const suratlulus = row.getValue("suratlulus") as string | null;
+            return (
+                <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                    suratlulus 
+                    ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
+                    : "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200"
+                }`}>
+                    {suratlulus ? "Tersedia" : "Belum Ada"}
                 </span>
             )
         },

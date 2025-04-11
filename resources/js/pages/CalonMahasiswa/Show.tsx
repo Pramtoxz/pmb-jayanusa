@@ -341,6 +341,55 @@ export default function Show({ calonMahasiswa }: Props) {
                             </div>
                         )}
                     </div>
+
+                    {/* Dokumen Surat Lulus */}
+                    <div className="bg-white dark:bg-gray-900 p-5 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+                        <h3 className="text-base font-semibold text-purple-600 mb-4 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            Surat Lulus
+                        </h3>
+                        
+                        {calonMahasiswa.pembayaran[0]?.suratlulus ? (
+                            <div className="mt-2">
+                                <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg flex items-center justify-between mb-3">
+                                    <span className="text-sm font-medium text-purple-700 dark:text-purple-300">Surat Lulus</span>
+                                    <a 
+                                        href={calonMahasiswa.pembayaran[0].suratlulus} 
+                                        target="_blank" 
+                                        className="text-xs text-purple-600 dark:text-purple-400 hover:underline flex items-center"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                                        </svg>
+                                        Buka Dokumen
+                                    </a>
+                                </div>
+                                <iframe 
+                                    src={calonMahasiswa.pembayaran[0].suratlulus} 
+                                    className="w-full h-64 rounded-lg border border-gray-200 dark:border-gray-700" 
+                                />
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-8 bg-gray-50 dark:bg-gray-800 rounded-lg mt-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-300 dark:text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                <p className="mt-4 text-muted-foreground">Surat Lulus belum tersedia</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </AppLayout>
