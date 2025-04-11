@@ -12,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import LogoJayanusa from "@/assets/images/home/jayanusa.webp";
 import { PROVINCES, CITIES } from "@/data/indonesia";
 
@@ -65,7 +64,6 @@ export default function FormPendaftaran({ initialData }: Props) {
     kelas: '',
   });
 
-  const [errors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [isSubmitting] = useState(false);
   const [availableCities, setAvailableCities] = useState<string[]>([]);
 
@@ -113,14 +111,46 @@ export default function FormPendaftaran({ initialData }: Props) {
     }
 
     router.post('/pendaftaran', formDataToSend, {
-      onError: (errors: Record<string, string>) => {
-        const errorMessage = Object.values(errors)[0] || 'Silakan lengkapi semua field yang diperlukan';
+      onSuccess: () => {
         Swal.fire({
-          icon: 'error',
-          title: 'Validasi Error',
-          text: errorMessage,
-          confirmButtonColor: '#d33'
+          icon: 'success',
+          title: 'Berhasil',
+          text: 'Data pendaftaran berhasil disimpan',
+          confirmButtonColor: '#3085d6'
+        }).then(() => {
+          router.visit('/siswa/profile');
         });
+      },
+      onError: (errors: Record<string, string[] | string>) => {
+        // SweetAlert untuk NIK yang sudah terdaftar
+        if (errors.nik && (
+          (typeof errors.nik === 'string' && errors.nik.toLowerCase().includes('terdaftar')) ||
+          (Array.isArray(errors.nik) && errors.nik.some(err => err.toLowerCase().includes('terdaftar')))
+        )) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'NIK Sudah Terdaftar!',
+            text: 'NIK yang Anda masukkan sudah terdaftar dalam sistem',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Tutup',
+            showClass: {
+              popup: 'animate__animated animate__shakeX'
+            }
+          });
+        } 
+        // SweetAlert untuk validasi form yang belum lengkap
+        else {
+          Swal.fire({
+            icon: 'info',
+            title: 'Data Belum Lengkap!',
+            text: 'Silakan lengkapi seluruh data yang diperlukan',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Mengerti',
+            showClass: {
+              popup: 'animate__animated animate__fadeInDown'
+            }
+          });
+        }
       }
     });
   };
@@ -168,16 +198,12 @@ export default function FormPendaftaran({ initialData }: Props) {
                       onChange={handleChange}
                       maxLength={16}
                       placeholder="Masukkan NIK (16 digit)"
-                      className={cn(
-                        "transition-colors duration-200",
-                        errors.nik ? "border-destructive" : "focus:border-primary"
-                      )}
+                      className="transition-colors duration-200 focus:border-primary"
                     />
                     <div className="flex justify-between text-xs">
                       <p className="text-muted-foreground">Format: 16 digit angka</p>
                       <p className="text-muted-foreground">{formData.nik.length}/16</p>
                     </div>
-                    {errors.nik && <p className="text-sm text-destructive">{errors.nik}</p>}
                   </div>
 
                   <div className="space-y-2">
@@ -189,12 +215,8 @@ export default function FormPendaftaran({ initialData }: Props) {
                       value={formData.nama}
                       onChange={handleChange}
                       placeholder="Masukkan nama lengkap"
-                      className={cn(
-                        "transition-colors duration-200",
-                        errors.nama ? "border-destructive" : "focus:border-primary"
-                      )}
+                      className="transition-colors duration-200 focus:border-primary"
                     />
-                    {errors.nama && <p className="text-sm text-destructive">{errors.nama}</p>}
                   </div>
 
                   <div className="space-y-2">
@@ -259,7 +281,6 @@ export default function FormPendaftaran({ initialData }: Props) {
                       </>
                     )}
                   </div>
-                  {errors.foto && <p className="text-sm text-destructive">{errors.foto}</p>}
                 </div>
               </div>
 

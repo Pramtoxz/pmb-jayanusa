@@ -44,10 +44,14 @@ class ControllerSiswa extends Controller
             'foto' => $siswa ? 'nullable|image|mimes:jpeg,png,jpg|max:2048' : 'required|image|mimes:jpeg,png,jpg|max:2048',
             'beasiswa' => 'required|in:iya,tidak',
             'kelas' => 'required_if:beasiswa,tidak|in:reguler,kerja',
+        ], [
+            'nik.unique' => 'NIK yang Anda masukkan sudah terdaftar dalam sistem',
+            'nik.required' => 'NIK wajib diisi',
+            'nik.size' => 'NIK harus 16 digit'
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return back()->withErrors($validator->errors());
         }
 
         try {
@@ -80,14 +84,14 @@ class ControllerSiswa extends Controller
             }
 
             DB::commit();
-            return redirect()->route('siswa.profile')->with('message', 'Data berhasil disimpan');
+            return redirect()->route('siswa.profile')->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();
             if (isset($fotoPath)) {
                 Storage::disk('public')->delete($fotoPath);
             }
-            return response()->json(['error' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()], 500);
+            return back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()]);
         }
     }
 
