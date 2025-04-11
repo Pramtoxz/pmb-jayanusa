@@ -80,12 +80,20 @@ export default function Navigation({ auth }: NavigationProps) {
                 <span>Menu</span>
               </Link>
             ) : (
-              <Link
-                href={route('login')}
-                className="bg-[#02188B] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-[#D42800] dark:bg-[#FF4433] dark:hover:bg-[#E53E2E] transform hover:scale-105 hover:shadow-lg"
-              >
-                Login
-              </Link>
+              <>
+                <Link
+                  href={route('login')}
+                  className="bg-[#02188B] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-[#D42800] dark:bg-[#FF4433] dark:hover:bg-[#E53E2E] transform hover:scale-105 hover:shadow-lg"
+                >
+                  Login
+                </Link>
+                <Link
+                  href={route('register')}
+                  className="bg-[#D42800] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-[#02188B] dark:bg-[#E53E2E] dark:hover:bg-[#FF4433] transform hover:scale-105 hover:shadow-lg"
+                >
+                  Daftar
+                </Link>
+              </>
             )}
           </div>
 
@@ -148,13 +156,22 @@ export default function Navigation({ auth }: NavigationProps) {
               <span>Menu</span>
             </Link>
           ) : (
-            <Link
-              href={route('register')}
-              className="block w-full text-center px-3 py-2 rounded-md text-base font-medium bg-[#02188B] text-white hover:bg-[#D42800] dark:bg-[#FF4433] dark:hover:bg-[#E53E2E] transition-colors duration-200"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Daftar Sekarang
-            </Link>
+            <div className="space-y-2 px-3">
+              <Link
+                href={route('login')}
+                className="block w-full text-center py-2 rounded-md text-base font-medium bg-[#02188B] text-white hover:bg-[#D42800] dark:bg-[#FF4433] dark:hover:bg-[#E53E2E] transition-colors duration-200"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Login
+              </Link>
+              <Link
+                href={route('register')}
+                className="block w-full text-center py-2 rounded-md text-base font-medium bg-[#D42800] text-white hover:bg-[#02188B] dark:bg-[#E53E2E] dark:hover:bg-[#FF4433] transition-colors duration-200"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Daftar
+              </Link>
+            </div>
           )}
         </div>
       </div>
