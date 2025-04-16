@@ -193,7 +193,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                 />
                             </div>
                             <h1 className="text-white text-2xl font-bold text-center z-10">
-                                PPMB JAYANUSA
+                                Penerimaan Pendaftaran Mahasiswa Baru
                             </h1>
                             <p className="text-blue-100 text-sm mt-1 z-10">
                                 STMIK - AMIK JAYANUSA

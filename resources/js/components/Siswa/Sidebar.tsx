@@ -27,7 +27,7 @@ export default function Sidebar({ activePage }: SidebarProps) {
   };
 
   return (
-    <div className="w-full sm:w-64 bg-white dark:bg-gray-800 shadow-sm rounded-lg">
+    <div className="w-full sm:w-64 bg-white shadow-sm rounded-lg">
       <div className="p-4">
         <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
           Dashboard 
@@ -40,8 +40,8 @@ export default function Sidebar({ activePage }: SidebarProps) {
               href={item.href}
               className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
                 item.active
-                  ? 'bg-[#02188B] text-white dark:bg-[#FF4433]'
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-[#02188B] dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-[#FF4433]'
+                  ? 'bg-[#02188B] text-white'
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-[#02188B]'
               }`}
             >
               <span className="mr-3">{item.icon}</span>
@@ -50,12 +50,12 @@ export default function Sidebar({ activePage }: SidebarProps) {
           ))}
           
           {/* Tambahkan garis pemisah */}
-          <div className="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+          <div className="border-t border-gray-200 my-2"></div>
           
           {/* Tombol Logout */}
           <button
             onClick={handleLogout}
-            className="w-full flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+            className="w-full flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 text-red-600 hover:bg-red-50"
           >
             <span className="mr-3">
               <LogOut className="w-5 h-5" />

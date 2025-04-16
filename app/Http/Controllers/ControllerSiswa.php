@@ -74,9 +74,10 @@ class ControllerSiswa extends Controller
                 $siswa->update($data);
             } else {
                 $siswa = Siswa::create($data);
+                $jumlahPembayaran = $request->beasiswa === 'iya' ? 100000 : 200000;
                 Pembayaran::create([
                     'kode_pembayaran' => 'PMB-' . date('Y') . '-' . str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT),
-                    'jumlah' => 200000,
+                    'jumlah' => $jumlahPembayaran,
                     'status' => 'menunggu',
                     'nik_siswa' => $request->nik,
                     'keterangan' => 'Biaya Pendaftaran Mahasiswa Baru'

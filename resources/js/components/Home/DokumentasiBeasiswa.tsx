@@ -1,204 +1,74 @@
-import { useState, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Card } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 
 // Import gambar beasiswa
-import Australia2016 from '@/assets/images/beasiswa/australi-2016.jpg'
-import Australia2017 from '@/assets/images/beasiswa/australi-2017.jpg'
-import Australia2018_1 from '@/assets/images/beasiswa/australi-2018-1.jpg'
-import Australia2018_2 from '@/assets/images/beasiswa/australi-2018-2.jpg'
-import Australia2018_3 from '@/assets/images/beasiswa/australi-2018-3.jpg'
-import Australia2019_1 from '@/assets/images/beasiswa/australi-2019-1.jpg'
-import Australia2019 from '@/assets/images/beasiswa/australi-2019.jpg'
-import Japan1 from '@/assets/images/beasiswa/japan-1.jpg'
-import Japan2 from '@/assets/images/beasiswa/japan-2.jpg'
-import Japan3 from '@/assets/images/beasiswa/japan-3.jpg'
-import Japan4 from '@/assets/images/beasiswa/japan-4.jpg'
-import Malaysia2017_1 from '@/assets/images/beasiswa/malaysia-2017-1.jpg'
-import Malaysia2017 from '@/assets/images/beasiswa/malaysia-2017.jpg'
-import Malaysia2019_1 from '@/assets/images/beasiswa/malaysia-2019-1.jpg'
-import Malaysia2019 from '@/assets/images/beasiswa/malaysia-2019.jpg'
-import Malaysia2020_1 from '@/assets/images/beasiswa/malaysia-2020-1.jpg'
-import Malaysia2020_2 from '@/assets/images/beasiswa/malaysia-2020-2.jpg'
-import Thailand2013_1 from '@/assets/images/beasiswa/thailand-2013-1.jpg'
-import Thailand2013 from '@/assets/images/beasiswa/thailand-2013.jpg'
+import Pengenalan from '@/assets/images/beasiswa/1.svg'
+import Australia from '@/assets/images/beasiswa/2.svg'
+import Malaysia from '@/assets/images/beasiswa/3.svg'
+import Jepang from '@/assets/images/beasiswa/4.svg'
 
-interface BeasiswaGallery {
-  [key: string]: {
-    title: string;
-    images: string[];
-  };
-}
-
-const beasiswaGallery: BeasiswaGallery = {
-  australia: {
-    title: "Beasiswa Australia",
-    images: [
-      Australia2016, Australia2017,
-      Australia2018_1, Australia2018_2, Australia2018_3,
-      Australia2019_1, Australia2019
-    ]
-  },
-  japan: {
-    title: "Beasiswa Jepang",
-    images: [Japan1, Japan2, Japan3, Japan4]
-  },
-  malaysia: {
-    title: "Beasiswa Malaysia",
-    images: [
-      Malaysia2017_1, Malaysia2017,
-      Malaysia2019_1, Malaysia2019,
-      Malaysia2020_1, Malaysia2020_2
-    ]
-  },
-  thailand: {
-    title: "Beasiswa Thailand",
-    images: [Thailand2013_1, Thailand2013]
-  }
-}
+const bannerImages = [
+  { url: Pengenalan, title: "" },
+  { url: Australia, title: "" },
+  { url: Malaysia, title: "" },
+  { url: Jepang, title: "" },
+]
 
 export default function DokumentasiBeasiswa() {
-  const [selectedTab, setSelectedTab] = useState('australia')
-  const tabsRef = useRef<HTMLDivElement>(null)
-  const [showLeftArrow, setShowLeftArrow] = useState(false)
-  const [showRightArrow, setShowRightArrow] = useState(true)
+  const [currentIndex, setCurrentIndex] = useState(0)
 
-  const handleScroll = () => {
-    if (!tabsRef.current) return
-    
-    const { scrollLeft, scrollWidth, clientWidth } = tabsRef.current
-    setShowLeftArrow(scrollLeft > 0)
-    setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10)
-  }
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) => 
+        prevIndex === bannerImages.length - 1 ? 0 : prevIndex + 1
+      )
+    }, 5000) // Slide setiap 5 detik
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (!tabsRef.current) return
-    
-    const scrollAmount = 200
-    const newScrollLeft = tabsRef.current.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount)
-    tabsRef.current.scrollTo({
-      left: newScrollLeft,
-      behavior: 'smooth'
-    })
-  }
+    return () => clearInterval(timer)
+  }, [])
 
   return (
-    <Card className="backdrop-blur-sm bg-white/90 dark:bg-[#161615]/90 rounded-3xl shadow-2xl overflow-hidden border-0">
-      <Tabs 
-        defaultValue="australia" 
-        className="w-full"
-        value={selectedTab}
-        onValueChange={setSelectedTab}
-      >
-        {/* Tab List Container */}
-        <div className="relative p-6 border-b border-gray-200 dark:border-gray-800">
-          <div className="flex items-center justify-between">
-            {showLeftArrow && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-9 w-9 rounded-full bg-white/90 dark:bg-[#161615]/90 shadow-lg hover:bg-white dark:hover:bg-[#161615] transition-all duration-300"
-                  onClick={() => scroll('left')}
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </Button>
-              </motion.div>
-            )}
-
-            <div 
-              ref={tabsRef}
-              className="flex-1 overflow-x-auto scrollbar-hide mx-4"
-              onScroll={handleScroll}
-            >
-              <TabsList className="w-full flex justify-center gap-2 bg-transparent">
-                {Object.keys(beasiswaGallery).map((country) => (
-                  <TabsTrigger
-                    key={country}
-                    value={country}
-                    className="px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 bg-gray-100/50 dark:bg-gray-800/50 data-[state=active]:bg-[#02188B] dark:data-[state=active]:bg-[#FF4433] data-[state=active]:text-white"
-                  >
-                    {beasiswaGallery[country].title}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+    <Card className="backdrop-blur-sm bg-white/90 dark:bg-[#ffff]/90 rounded-3xl shadow-2xl overflow-hidden border-0">
+      <div className="relative w-full" style={{ aspectRatio: "3780/1890" }}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0"
+          >
+            <img
+              src={bannerImages[currentIndex].url}
+              alt={bannerImages[currentIndex].title}
+              className="w-full h-full object-cover"
+              style={{ maxWidth: "3780px", maxHeight: "1890px" }}
+            />
+            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+              <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold">
+                {bannerImages[currentIndex].title}
+              </h3>
             </div>
+          </motion.div>
+        </AnimatePresence>
 
-            {showRightArrow && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-9 w-9 rounded-full bg-white/90 dark:bg-[#161615]/90 shadow-lg hover:bg-white dark:hover:bg-[#161615] transition-all duration-300"
-                  onClick={() => scroll('right')}
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </Button>
-              </motion.div>
-            )}
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="p-6">
-          {Object.entries(beasiswaGallery).map(([country, data]) => (
-            <TabsContent key={country} value={country}>
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: {
-                    opacity: 1,
-                    transition: {
-                      staggerChildren: 0.1
-                    }
-                  }
-                }}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-              >
-                {data.images.map((image, index) => (
-                  <motion.div
-                    key={index}
-                    variants={{
-                      hidden: { y: 20, opacity: 0 },
-                      visible: { y: 0, opacity: 1 }
-                    }}
-                    className="group relative aspect-video rounded-xl overflow-hidden"
-                  >
-                    <img
-                      src={image}
-                      alt={`${data.title} dokumentasi ${index + 1}`}
-                      className="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-                      <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                        <h4 className="text-white text-lg font-semibold">
-                          {data.title}
-                        </h4>
-                        <p className="text-white/80 text-sm">
-                          Dokumentasi {index + 1}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </TabsContent>
+        {/* Indikator */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+          {bannerImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentIndex 
+                  ? 'bg-white w-6' 
+                  : 'bg-white/50 hover:bg-white/75'
+              }`}
+            />
           ))}
         </div>
-      </Tabs>
+      </div>
     </Card>
   )
 } 

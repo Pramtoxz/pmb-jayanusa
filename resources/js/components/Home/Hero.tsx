@@ -17,14 +17,14 @@ export default function Hero() {
     <section className="relative min-h-screen overflow-hidden" id="home">
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
         {/* Left Column */}
-        <div className="relative px-6 py-12 flex items-center lg:px-12 bg-gradient-to-br from-white to-pink-50 dark:from-gray-900 dark:to-gray-800">
+        <div className="relative px-6 py-12 flex items-center lg:px-12 bg-gradient-to-br from-white to-pink-50">
           <div className="relative z-10 max-w-2xl mx-auto lg:mx-0">
-            <h1 className="text-[2.5rem] leading-tight lg:text-[4.5rem] font-bold mb-8 bg-gradient-to-r from-gray-900 to-[#02188B] bg-clip-text text-transparent animate-fade-in dark:from-white dark:to-[#FF4433]">
-                         Penerimaan Mahasiswa Baru
+            <h1 className="text-[2.5rem] leading-tight lg:text-[4.5rem] font-bold mb-8 bg-gradient-to-r from-gray-900 to-[#02188B] bg-clip-text text-transparent animate-fade-in">
+              Penerimaan Mahasiswa Baru
               <br />
-                <span className="text-[#02188B]">STMIK-AMIK JAYANUSA</span>
+              <span className="text-[#02188B]">STMIK-AMIK JAYANUSA</span>
             </h1>
-            <p className="text-lg lg:text-xl text-gray-600 mb-12 max-w-xl animate-slide-in dark:text-gray-300">
+            <p className="text-lg lg:text-xl text-gray-600 mb-12 max-w-xl animate-slide-in">
               Penerimaan Mahasiswa Baru STMIK-AMIK JAYANUSA telah dibuka!
               Raih kesempatan untuk menjadi bagian dari perguruan tinggi
               terkemuka di bidang teknologi informasi dan komputer.

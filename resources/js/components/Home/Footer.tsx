@@ -1,7 +1,7 @@
 import LogoJayanusa from '@/assets/images/home/jayanusa.webp';
 export default function Footer() {
   return (
-    <footer className="bg-white shadow-inner dark:bg-[#161615]">
+    <footer className="bg-white shadow-inner">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Tentang Kami */}
@@ -12,15 +12,15 @@ export default function Footer() {
                 alt="Logo STMIK Jayanusa" 
                 className="h-12 w-auto"
               />
-              <h3 className="text-lg font-semibold text-[#02188B] dark:text-[#FF4433]">STMIK - AMIK JAYANUSA</h3>
+              <h3 className="text-lg font-semibold text-[#02188B]">STMIK - AMIK JAYANUSA</h3>
             </div>
-            <p className="text-sm text-[#706f6c] dark:text-[#A1A09A] leading-relaxed mb-6">
+            <p className="text-sm text-[#706f6c] leading-relaxed mb-6">
               STMIK - AMIK JAYANUSA berdiri pada tahun 2002 berdasarkan SK DIKTI No. 153/D/O/2002 tanggal 02 Agustus 2002. Dan Alhamdulillah sampai saat ini semua Prodi yang ada sudah Ter-Akreditasi B.
             </p>
             <div className="flex space-x-4 mt-4">
               <a 
                 href="https://www.facebook.com/stmikamikjayanusa" 
-                className="text-[#02188B] hover:text-[#D42800] dark:text-[#FF4433] dark:hover:text-[#E53E2E] transition-colors duration-200"
+                className="text-[#02188B] hover:text-[#D42800] transition-colors duration-200"
                 aria-label="Facebook"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -31,7 +31,7 @@ export default function Footer() {
               </a>
               <a 
                 href="https://www.tiktok.com/@jayanusapadang" 
-                className="text-[#02188B] hover:text-[#D42800] dark:text-[#FF4433] dark:hover:text-[#E53E2E] transition-colors duration-200"
+                className="text-[#02188B] hover:text-[#D42800] transition-colors duration-200"
                 aria-label="TikTok"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -42,7 +42,7 @@ export default function Footer() {
               </a>
               <a 
                 href="https://www.instagram.com/stmikamikjayanusa" 
-                className="text-[#02188B] hover:text-[#D42800] dark:text-[#FF4433] dark:hover:text-[#E53E2E] transition-colors duration-200"
+                className="text-[#02188B] hover:text-[#D42800] transition-colors duration-200"
                 aria-label="Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -56,29 +56,29 @@ export default function Footer() {
 
           {/* Hubungi Kami */}
           <div>
-            <h3 className="text-lg font-semibold text-[#02188B] dark:text-[#FF4433] mb-4">Hubungi Kami</h3>
-            <div className="space-y-3 text-sm text-[#706f6c] dark:text-[#A1A09A]">
+            <h3 className="text-lg font-semibold text-[#02188B] mb-4">Hubungi Kami</h3>
+            <div className="space-y-3 text-sm text-[#706f6c]">
               <div className="flex items-start">
-                <svg className="h-5 w-5 text-[#02188B] dark:text-[#FF4433] mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-5 w-5 text-[#02188B] mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <span>Jl. Damar No.69 E Padang, atau Jl. Olo Ladang No.1 Padang, Sumatera Barat</span>
               </div>
               <div className="flex items-center">
-                <svg className="h-5 w-5 text-[#02188B] dark:text-[#FF4433] mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-5 w-5 text-[#02188B] mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path fillRule="evenodd" clipRule="evenodd" d="M20.472 3.528C18.208 1.264 15.208 0 12 0 5.472 0 0 5.472 0 12c0 2.088.552 4.128 1.584 5.928L0 24l6.168-1.56C7.872 23.448 9.912 24 12 24c6.528 0 12-5.472 12-12 0-3.208-1.264-6.208-3.528-8.472zM12 21.984c-1.992 0-3.936-.528-5.64-1.536l-.408-.24-4.2 1.104 1.128-4.104-.264-.42A9.945 9.945 0 012.016 12C2.016 6.576 6.576 2.016 12 2.016c2.688 0 5.208 1.048 7.104 2.944S22.032 9.312 22.032 12c0 5.424-4.56 9.984-10.032 9.984zm5.52-7.44c-.288-.144-1.728-.852-1.992-.948-.264-.096-.456-.144-.648.144-.192.288-.744.948-.912 1.14-.168.192-.336.216-.624.072-.288-.144-1.212-.444-2.304-1.416-.852-.756-1.428-1.692-1.596-1.98-.168-.288-.018-.444.126-.588.129-.129.288-.336.432-.504.144-.168.192-.288.288-.48.096-.192.048-.36-.024-.504-.072-.144-.648-1.56-.888-2.136-.24-.576-.48-.48-.648-.48-.168 0-.36-.024-.552-.024s-.504.072-.768.36c-.264.288-1.008.984-1.008 2.4 0 1.416 1.032 2.784 1.176 2.976.144.192 1.992 3.048 4.824 4.272.672.288 1.2.456 1.608.588.672.216 1.284.192 1.776.12.54-.072 1.728-.708 1.968-1.392.24-.684.24-1.272.168-1.392-.072-.12-.264-.192-.552-.336z" />
                 </svg>
                 <span>08116650635</span>
               </div>
               <div className="flex items-center">
-                <svg className="h-5 w-5 text-[#02188B] dark:text-[#FF4433] mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-5 w-5 text-[#02188B] mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
                 <span>jayanusa@jayanusa.ac.id</span>
               </div>
               <div className="flex items-center">
-                <svg className="h-5 w-5 text-[#02188B] dark:text-[#FF4433] mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-5 w-5 text-[#02188B] mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
                 <span>(0751)-28984</span>
@@ -88,8 +88,8 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-          <p className="text-center text-xs text-[#706f6c] dark:text-[#A1A09A]">
+        <div className="mt-12 pt-8 border-t border-gray-200">
+          <p className="text-center text-xs text-[#706f6c]">
             Copyright © {new Date().getFullYear()} STMIK Jayanusa - Campus For Information Technology
           </p>
         </div>

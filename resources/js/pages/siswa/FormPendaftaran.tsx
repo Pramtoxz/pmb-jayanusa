@@ -114,8 +114,8 @@ export default function FormPendaftaran({ initialData }: Props) {
       onSuccess: () => {
         Swal.fire({
           icon: 'success',
-          title: 'Berhasil',
-          text: 'Data pendaftaran berhasil disimpan',
+          title: 'Pendaftaran Berhasil',
+          text: 'Untuk Tahapan Selanjutnya Silahkan Pilih Menu Pembayaran',
           confirmButtonColor: '#3085d6'
         }).then(() => {
           router.visit('/siswa/profile');
@@ -158,7 +158,7 @@ export default function FormPendaftaran({ initialData }: Props) {
   return (
     <div className="space-y-6">
       {/* Bagian Header/Profil */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+      <div className="bg-white rounded-lg shadow-sm">
         <div className="p-4 sm:p-6">
           <div className="flex flex-col items-center gap-4">
             <img 
@@ -166,7 +166,7 @@ export default function FormPendaftaran({ initialData }: Props) {
               alt="Logo STMIK Jayanusa"
               className="h-12 sm:h-16 w-auto"
             />
-            <h3 className="text-xl sm:text-2xl font-bold text-center text-[#02188B] dark:text-[#FF4433]">
+            <h3 className="text-xl sm:text-2xl font-bold text-center text-[#02188B]">
               STMIK-AMIK JAYANUSA
             </h3>
             <h2 className="text-xl sm:text-2xl font-bold text-center">
@@ -177,7 +177,7 @@ export default function FormPendaftaran({ initialData }: Props) {
       </div>
 
       {/* Bagian Form */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+      <div className="bg-white rounded-lg shadow-sm">
         <div className="p-4 sm:p-6">
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-6">
@@ -461,7 +461,7 @@ export default function FormPendaftaran({ initialData }: Props) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="program_studi" className="font-medium">Program Studi</Label>
+                <Label htmlFor="program_studi" className="font-medium">Program Studi Pilihan</Label>
                 <Select 
                   name="program_studi" 
                   value={formData.program_studi}
@@ -475,17 +475,17 @@ export default function FormPendaftaran({ initialData }: Props) {
                   <SelectContent>
                     <SelectItem value="MI">
                       <div className="flex items-center justify-between">
-                      <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">D3-Manajemen Informatika</span>                   
-                        </div>
+                        <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">D3-Manajemen Informatika</span>                   
+                      </div>
                     </SelectItem>
                     <SelectItem value="SI">
                       <div className="flex items-center justify-between">
-                      <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">S1-Sistem Informasi</span>
+                        <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">S1-Sistem Informasi</span>
                       </div>
                     </SelectItem>
                     <SelectItem value="SK">
                       <div className="flex items-center justify-between">
-                      <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">S1-Sistem Komputer</span>
+                        <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">S1-Sistem Komputer</span>
                       </div>
                     </SelectItem>
                   </SelectContent>
@@ -501,7 +501,6 @@ export default function FormPendaftaran({ initialData }: Props) {
                     setFormData(prev => ({ 
                       ...prev, 
                       beasiswa: value,
-                      // Set kelas menjadi reguler jika beasiswa = iya (KIP)
                       kelas: value === 'iya' ? 'reguler' : prev.kelas 
                     }))
                   }
@@ -510,12 +509,16 @@ export default function FormPendaftaran({ initialData }: Props) {
                     <SelectValue placeholder="Penerima Beasiswa KIP-Kuliah (Isi Tidak Jika Tidak Penerima)" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="iya"><div className="flex items-center justify-between">
-                      <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Ya (KIP-Kuliah)</span>
-                      </div></SelectItem>
-                    <SelectItem value="tidak"><div className="flex items-center justify-between">
-                      <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Tidak</span>
-                      </div></SelectItem>
+                    <SelectItem value="iya">
+                      <div className="flex items-center justify-between">
+                        <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Ya (KIP-Kuliah)</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="tidak">
+                      <div className="flex items-center justify-between">
+                        <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">Tidak</span>
+                      </div>
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>

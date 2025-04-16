@@ -420,7 +420,7 @@ export default function Show({ pembayaran }: Props) {
                             )}
                         </div>
                         
-                        <div className="bg-white dark:bg-gray-900 p-5 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <div className="bg-white dark:bg-gray-900 p-5 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                             <h3 className="text-base font-semibold text-primary mb-4 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -438,18 +438,8 @@ export default function Show({ pembayaran }: Props) {
                                             src={pembayaran.skl}
                                             className="w-full h-full"
                                             title="Surat Keterangan Lulus"
-                                            sandbox="allow-scripts allow-same-origin allow-popups"
                                             loading="lazy"
-                                        >
-                                            <div className="w-full h-full flex items-center justify-center flex-col p-4">
-                                                <svg className="h-12 w-12 text-red-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                                </svg>
-                                                <p className="text-sm text-gray-600 dark:text-gray-300">
-                                                    PDF tidak dapat ditampilkan di sini. Silakan klik tombol "Buka PDF" di bawah untuk melihat file.
-                                                </p>
-                                            </div>
-                                        </iframe>
+                                        />
                                     </div>
                                     <div className="p-3 text-center bg-gray-50 dark:bg-gray-800 flex justify-center gap-3">
                                         <a 
@@ -489,7 +479,7 @@ export default function Show({ pembayaran }: Props) {
                             )}
                         </div>
                         
-                        <div className="bg-white dark:bg-gray-900 p-5 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <div className="bg-white dark:bg-gray-900 p-5 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                             <h3 className="text-base font-semibold text-primary mb-4 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -507,18 +497,8 @@ export default function Show({ pembayaran }: Props) {
                                             src={pembayaran.rapor}
                                             className="w-full h-full"
                                             title="Rapor Terakhir"
-                                            sandbox="allow-scripts allow-same-origin allow-popups"
                                             loading="lazy"
-                                        >
-                                            <div className="w-full h-full flex items-center justify-center flex-col p-4">
-                                                <svg className="h-12 w-12 text-red-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                                </svg>
-                                                <p className="text-sm text-gray-600 dark:text-gray-300">
-                                                    PDF tidak dapat ditampilkan di sini. Silakan klik tombol "Buka PDF" di bawah untuk melihat file.
-                                                </p>
-                                            </div>
-                                        </iframe>
+                                        />
                                     </div>
                                     <div className="p-3 text-center bg-gray-50 dark:bg-gray-800 flex justify-center gap-3">
                                         <a 

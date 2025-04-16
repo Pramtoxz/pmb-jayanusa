@@ -58,6 +58,17 @@ export default function Register() {
         captchaAnswer: '',
     });
 
+    // Fungsi validasi password
+    const validatePassword = (password: string): boolean => {
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumbers = /\d/.test(password);
+        const hasSpecialChar = /[!@#$%^&*]/.test(password);
+        const isLongEnough = password.length >= 8;
+
+        return hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChar && isLongEnough;
+    };
+
     // Generate pertanyaan CAPTCHA acak
     const generateCaptcha = useCallback(() => {
         const randomIndex = Math.floor(Math.random() * captchaQuestions.length);
@@ -85,6 +96,16 @@ export default function Register() {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+        
+        // Validasi password sebelum menampilkan CAPTCHA
+        if (!validatePassword(data.password)) {
+            errors.password = 'Password harus mengandung minimal 8 karakter dengan kombinasi huruf besar, huruf kecil, angka dan simbol (!@#$%^&*)';
+            // Reset input password
+            setData('password', '');
+            setData('password_confirmation', '');
+            return;
+        }
+        
         setShowCaptcha(true);
     };
 
@@ -247,6 +268,7 @@ export default function Register() {
                                             )}
                                         </button>
                                     </div>
+                                    <p className="text-xs text-gray-500 mt-1">Password harus mengandung minimal 8 karakter dengan kombinasi huruf besar, huruf kecil, angka dan simbol (!@#$%^&*)</p>
                                     <InputError message={errors.password} />
                                 </div>
 

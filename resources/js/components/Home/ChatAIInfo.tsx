@@ -292,22 +292,22 @@ export default function ChatAIInfo() {
     }
 
     return (
-        <section id="chat-ai" className="py-16 bg-gradient-to-br from-white via-[#FFF2F2] to-white dark:from-[#161615] dark:via-[#1D0002] dark:to-[#161615]">
+        <section id="chat-ai" className="py-16 bg-gradient-to-br from-white via-[#FFF2F2] to-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
-                    <span className="inline-block px-4 py-1 bg-[#FFF2F2] dark:bg-[#1D0002] rounded-full text-[#02188B] dark:text-[#FF4433] text-sm font-semibold mb-4">
+                    <span className="inline-block px-4 py-1 bg-[#FFF2F2] rounded-full text-[#02188B] text-sm font-semibold mb-4">
                         Chat AI
                     </span>
-                    <h2 className="text-4xl md:text-5xl font-bold text-[#1b1b18] mb-6 dark:text-[#EDEDEC] tracking-tight">
+                    <h2 className="text-4xl md:text-5xl font-bold text-[#1b1b18] mb-6 tracking-tight">
                         Tanya JaVA Sekarang
                     </h2>
-                    <p className="text-[#706f6c] dark:text-[#A1A09A] text-lg max-w-2xl mx-auto mb-12">
+                    <p className="text-[#706f6c] text-lg max-w-2xl mx-auto mb-12">
                         Dapatkan informasi lengkap seputar STMIK-AMIK Jayanusa dengan bantuan asisten virtual kami
                     </p>
                 </div>
 
-                <div className="w-full max-w-2xl mx-auto bg-white dark:bg-[#161615] rounded-2xl shadow-lg border dark:border-gray-800">
-                    <div className="p-4 border-b dark:border-gray-800 flex items-center gap-3">
+                <div className="w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-lg border">
+                    <div className="p-4 border-b flex items-center gap-3">
                         <Avatar className="h-10 w-10">
                             <img 
                                 src={AvatarAI}
@@ -316,12 +316,12 @@ export default function ChatAIInfo() {
                             />
                         </Avatar>
                         <div>
-                            <p className="font-semibold text-gray-900 dark:text-white">Jayanusa Virtual Assistant</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">Online</p>
+                            <p className="font-semibold text-gray-900">Jayanusa Virtual Assistant</p>
+                            <p className="text-sm text-gray-500">Online</p>
                         </div>
                     </div>
 
-                    <div ref={chatContainerRef} className="h-[350px] overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+                    <div ref={chatContainerRef} className="h-[350px] overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-300">
                         <div className="space-y-3">
                             {messages.map((message, i) => (
                                 <div
@@ -340,8 +340,8 @@ export default function ChatAIInfo() {
                                     <div
                                         className={`max-w-[85%] rounded-xl p-3 ${
                                             message.role === 'user'
-                                                ? 'bg-[#02188B] text-white dark:bg-[#FF4433]'
-                                                : 'bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100'
+                                                ? 'bg-[#02188B] text-white'
+                                                : 'bg-gray-100 text-gray-900'
                                         }`}
                                     >
                                         <p 
@@ -361,7 +361,7 @@ export default function ChatAIInfo() {
                                             className="p-1"
                                         />
                                     </Avatar>
-                                    <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-3">
+                                    <div className="bg-gray-100 rounded-xl p-3">
                                         <div className="flex gap-1">
                                             <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                                             <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
@@ -373,14 +373,14 @@ export default function ChatAIInfo() {
                         </div>
                     </div>
 
-                    <div className="p-3 border-t border-b dark:border-gray-800 bg-gradient-to-r from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 font-medium">Tanyakan pada JaVA:</p>
-                        <div className="flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+                    <div className="p-3 border-t border-b bg-gradient-to-r from-gray-50 to-white">
+                        <p className="text-xs text-gray-600 mb-2 font-medium">Tanyakan pada JaVA:</p>
+                        <div className="flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300">
                             {menuItems.map((item, index) => (
                                 <button
                                     key={index}
                                     onClick={() => handleSend(item.title)}
-                                    className="text-xs px-3 py-1.5 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 whitespace-nowrap flex-shrink-0"
+                                    className="text-xs px-3 py-1.5 rounded-full bg-white border border-gray-200 hover:bg-gray-50 transition-all duration-200 whitespace-nowrap flex-shrink-0"
                                 >
                                     {item.title}
                                 </button>
@@ -395,11 +395,11 @@ export default function ChatAIInfo() {
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                                className="flex-1 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-sm"
+                                className="flex-1 bg-white border-gray-200 text-sm"
                             />
                             <Button 
                                 onClick={() => handleSend()}
-                                className="bg-[#02188B] hover:bg-[#021070] dark:bg-[#FF4433] dark:hover:bg-[#E53E2E] px-3"
+                                className="bg-[#02188B] hover:bg-[#021070] px-3"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"

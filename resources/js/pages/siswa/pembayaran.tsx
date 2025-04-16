@@ -79,7 +79,7 @@ const UploadComponent = ({ pembayaran }: { pembayaran: PembayaranData }) => {
     <div className="flex flex-col items-center gap-2 relative">
       {showSuccess && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl transform transition-all">
+          <div className="bg-white rounded-2xl p-6 shadow-xl transform transition-all">
             <div className="w-48 h-48">
               <Lottie
                 animationData={successAnimation}
@@ -97,20 +97,20 @@ const UploadComponent = ({ pembayaran }: { pembayaran: PembayaranData }) => {
       
       {/* Tampilkan pesan penolakan jika status ditolak */}
       {pembayaran.status === 'ditolak' && pembayaran.keterangan && (
-        <div className="w-full mb-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+        <div className="w-full mb-3 p-3 bg-red-50 border border-red-200 rounded-lg">
           <div className="flex items-start">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-600 mt-0.5 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
             <div>
-              <p className="text-sm font-medium text-red-800 dark:text-red-300">Bukti pembayaran ditolak</p>
-              <p className="text-xs text-red-700 dark:text-red-400 mt-1">{pembayaran.keterangan}</p>
-              <p className="text-xs font-medium text-red-700 dark:text-red-400 mt-2">Silakan upload ulang bukti pembayaran</p>
+              <p className="text-sm font-medium text-red-800">Bukti pembayaran ditolak</p>
+              <p className="text-xs text-red-700 mt-1">{pembayaran.keterangan}</p>
+              <p className="text-xs font-medium text-red-700 mt-2">Silakan upload ulang bukti pembayaran</p>
             </div>
-              </div>
-            </div>
+          </div>
+        </div>
       )}
       
       {/* Preview area - bisa menampilkan bukti yang sudah ada atau preview upload baru */}
@@ -119,7 +119,7 @@ const UploadComponent = ({ pembayaran }: { pembayaran: PembayaranData }) => {
             "w-full h-40 sm:h-32 sm:w-32 rounded-lg border-2 border-dashed mx-auto",
           "flex items-center justify-center overflow-hidden",
           "transition-all duration-200 hover:border-primary",
-          pembayaran.status === 'ditolak' ? "border-red-300 dark:border-red-800" : ""
+          pembayaran.status === 'ditolak' ? "border-red-300" : ""
           )}>
             {previewUrl ? (
               <img 
@@ -150,7 +150,7 @@ const UploadComponent = ({ pembayaran }: { pembayaran: PembayaranData }) => {
           <Dialog>
             <div className="flex mt-2 justify-center gap-2">
               <DialogTrigger asChild>
-                <button className="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline">
+                <button className="text-xs text-blue-600 hover:text-blue-800 underline">
                   Lihat Bukti
                 </button>
               </DialogTrigger>
@@ -159,7 +159,7 @@ const UploadComponent = ({ pembayaran }: { pembayaran: PembayaranData }) => {
               {pembayaran.status === 'ditolak' && (
                 <button 
                   onClick={handleReupload}
-                  className="text-xs text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 underline"
+                  className="text-xs text-red-600 hover:text-red-800 underline"
                 >
                   Upload Ulang
                 </button>
@@ -185,7 +185,7 @@ const UploadComponent = ({ pembayaran }: { pembayaran: PembayaranData }) => {
             (isUploading) && "opacity-50 cursor-not-allowed",
             pembayaran.status === 'ditolak' && !previewUrl && "bg-red-600 hover:bg-red-700"
           )}>
-            {isUploading ? 'Mengupload...' : (previewUrl ? 'Konfirmasi Upload' : 
+            {isUploading ? 'Mengupload...' : (previewUrl ? 'Upload Ulang' : 
               (pembayaran.status === 'ditolak' ? 'Upload Ulang' : 'Upload Bukti'))}
             <input
               type="file"
@@ -245,7 +245,7 @@ const UploadSKLComponent = ({ pembayaran }: { pembayaran: PembayaranData }) => {
     <div className="flex flex-col items-center gap-2 relative">
       {showSuccess && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl transform transition-all">
+          <div className="bg-white rounded-2xl p-6 shadow-xl transform transition-all">
             <div className="w-48 h-48">
               <Lottie
                 animationData={successAnimation}
@@ -263,16 +263,16 @@ const UploadSKLComponent = ({ pembayaran }: { pembayaran: PembayaranData }) => {
       
       {/* Tampilkan keterangan/alasan penolakan jika status ditolak */}
       {pembayaran.status === 'ditolak' && pembayaran.keterangan && (
-        <div className="w-full mb-2 p-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+        <div className="w-full mb-2 p-2 bg-red-50 border border-red-200 rounded-lg">
           <div className="flex items-start">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-red-600 dark:text-red-400 mt-0.5 mr-1.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-red-600 mt-0.5 mr-1.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
             <div>
-              <p className="text-xs font-medium text-red-800 dark:text-red-300">Dokumen ditolak</p>
-              <p className="text-xs text-red-700 dark:text-red-400 mt-0.5">{pembayaran.keterangan}</p>
+              <p className="text-xs font-medium text-red-800">Dokumen ditolak</p>
+              <p className="text-xs text-red-700 mt-0.5">{pembayaran.keterangan}</p>
             </div>
           </div>
         </div>
@@ -286,7 +286,7 @@ const UploadSKLComponent = ({ pembayaran }: { pembayaran: PembayaranData }) => {
                 "w-full h-12 rounded-lg border-2 border-dashed mx-auto",
                 "flex items-center justify-center",
                 "transition-all duration-200 hover:border-primary",
-                pembayaran.status === 'ditolak' ? "border-red-300 dark:border-red-800" : ""
+                pembayaran.status === 'ditolak' ? "border-red-300" : ""
               )}>
                 <div className="flex items-center space-x-2 px-3">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -314,7 +314,7 @@ const UploadSKLComponent = ({ pembayaran }: { pembayaran: PembayaranData }) => {
             "w-full h-12 rounded-lg border-2 border-dashed mx-auto",
             "flex items-center justify-center",
             "transition-all duration-200 hover:border-primary",
-            pembayaran.status === 'ditolak' ? "border-red-300 dark:border-red-800" : ""
+            pembayaran.status === 'ditolak' ? "border-red-300" : ""
           )}>
             {fileName ? (
               <div className="flex items-center space-x-2 px-3">
@@ -388,7 +388,7 @@ const UploadRaporComponent = ({ pembayaran }: { pembayaran: PembayaranData }) =>
     <div className="flex flex-col items-center gap-2 relative">
       {showSuccess && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl transform transition-all">
+          <div className="bg-white rounded-2xl p-6 shadow-xl transform transition-all">
             <div className="w-48 h-48">
               <Lottie
                 animationData={successAnimation}
@@ -406,16 +406,16 @@ const UploadRaporComponent = ({ pembayaran }: { pembayaran: PembayaranData }) =>
       
       {/* Tampilkan keterangan/alasan penolakan jika status ditolak */}
       {pembayaran.status === 'ditolak' && pembayaran.keterangan && (
-        <div className="w-full mb-2 p-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+        <div className="w-full mb-2 p-2 bg-red-50 border border-red-200 rounded-lg">
           <div className="flex items-start">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-red-600 dark:text-red-400 mt-0.5 mr-1.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-red-600 mt-0.5 mr-1.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
             <div>
-              <p className="text-xs font-medium text-red-800 dark:text-red-300">Dokumen ditolak</p>
-              <p className="text-xs text-red-700 dark:text-red-400 mt-0.5">{pembayaran.keterangan}</p>
+              <p className="text-xs font-medium text-red-800">Dokumen ditolak</p>
+              <p className="text-xs text-red-700 mt-0.5">{pembayaran.keterangan}</p>
             </div>
           </div>
         </div>
@@ -429,7 +429,7 @@ const UploadRaporComponent = ({ pembayaran }: { pembayaran: PembayaranData }) =>
                 "w-full h-12 rounded-lg border-2 border-dashed mx-auto",
                 "flex items-center justify-center",
                 "transition-all duration-200 hover:border-primary",
-                pembayaran.status === 'ditolak' ? "border-red-300 dark:border-red-800" : ""
+                pembayaran.status === 'ditolak' ? "border-red-300" : ""
               )}>
                 <div className="flex items-center space-x-2 px-3">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -457,7 +457,7 @@ const UploadRaporComponent = ({ pembayaran }: { pembayaran: PembayaranData }) =>
             "w-full h-12 rounded-lg border-2 border-dashed mx-auto",
             "flex items-center justify-center",
             "transition-all duration-200 hover:border-primary",
-            pembayaran.status === 'ditolak' ? "border-red-300 dark:border-red-800" : ""
+            pembayaran.status === 'ditolak' ? "border-red-300" : ""
           )}>
             {fileName ? (
               <div className="flex items-center space-x-2 px-3">
@@ -507,21 +507,21 @@ const SuratLulusComponent = ({ pembayaran }: { pembayaran: PembayaranData }) => 
             <div className="relative group cursor-pointer w-full">
               <div className="w-full h-12 rounded-lg border-2 border-dashed mx-auto
                 flex items-center justify-center
-                transition-all duration-200 hover:border-primary bg-green-50 dark:bg-green-900/20">
+                transition-all duration-200 hover:border-primary bg-green-50">
                 <div className="flex items-center space-x-2 px-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
-                  <span className="text-sm font-medium truncate text-green-700 dark:text-green-300">Surat Lulus Tersedia!</span>
+                  <span className="text-sm font-medium truncate text-green-700">Surat Lulus Tersedia!</span>
                 </div>
               </div>
-              <p className="mt-2 text-xs text-center text-green-600 dark:text-green-400 w-full">
+              <p className="mt-2 text-xs text-center text-green-600 w-full">
                 Klik untuk membuka dan mengunduh surat lulus Anda
               </p>
             </div>
           </DialogTrigger>
           <DialogContent className="w-[90vw] max-w-3xl p-0">
-            <div className="p-4 bg-white dark:bg-gray-800 flex justify-between items-center">
+            <div className="p-4 bg-white flex justify-between items-center">
               <h3 className="font-medium text-primary">Surat Lulus Anda</h3>
               <div className="flex gap-2">
                 <a
@@ -560,16 +560,15 @@ const SuratLulusComponent = ({ pembayaran }: { pembayaran: PembayaranData }) => 
       ) : (
         <div>
           <div className="w-full h-12 rounded-lg border-2 border-dashed mx-auto
-            flex items-center justify-center bg-yellow-50 dark:bg-yellow-900/20
-            border-yellow-300 dark:border-yellow-800">
-            <div className="flex items-center space-x-2 px-3 text-yellow-700 dark:text-yellow-400">
+            flex items-center justify-center bg-yellow-50 border-yellow-300">
+            <div className="flex items-center space-x-2 px-3 text-yellow-700">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span className="text-sm font-medium">Surat Lulus sedang diproses</span>
             </div>
           </div>
-          <p className="mt-2 text-xs text-center text-yellow-600 dark:text-yellow-400 w-full">
+          <p className="mt-2 text-xs text-center text-yellow-600 w-full">
             Surat lulus akan tersedia segera setelah diproses oleh admin
           </p>
         </div>
@@ -593,7 +592,7 @@ const CongratulationsModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl transform transition-all max-w-md w-full">
+      <div className="bg-white rounded-2xl p-6 shadow-xl transform transition-all max-w-md w-full">
         <div className="mb-6 text-center">
           <div className="w-32 h-32 mx-auto mb-4">
             <Lottie
@@ -603,23 +602,23 @@ const CongratulationsModal = ({
               className="w-full h-full"
             />
           </div>
-          <h3 className="text-2xl font-bold text-green-600 dark:text-green-400">
+          <h3 className="text-2xl font-bold text-green-600">
             Pembayaran Diterima!
           </h3>
-          <p className="mt-2 text-gray-600 dark:text-gray-300">
-            Selamat! Pembayaran Anda telah diverifikasi dan diterima. Anda resmi menjadi mahasiswa baru.
+          <p className="mt-2 text-gray-600">
+            Selamat! Pembayaran Anda telah diverifikasi dan diterima. Anda resmi menjadi Calon mahasiswa baru STMIK-AMIK Jayanusa.
           </p>
         </div>
 
-        <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg mb-6">
+        <div className="bg-green-50 p-4 rounded-lg mb-6">
           <div className="flex items-start">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600 mt-0.5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
               <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
             <div>
-              <h4 className="text-sm font-medium text-green-800 dark:text-green-300">Informasi Surat Lulus</h4>
-              <p className="text-xs text-green-700 dark:text-green-400 mt-1">
+              <h4 className="text-sm font-medium text-green-800">Informasi Surat Lulus</h4>
+              <p className="text-xs text-green-700 mt-1">
                 {hasLulusCertificate 
                   ? "Surat Lulus Anda sudah tersedia dan dapat diunduh dari dashboard."
                   : "Surat Lulus Anda sedang diproses dan akan tersedia segera."}
@@ -631,7 +630,7 @@ const CongratulationsModal = ({
         <div className="flex gap-3">
           <button
             onClick={onClose}
-            className="w-full py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            className="w-full py-2 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
           >
             Tutup
           </button>
@@ -689,7 +688,7 @@ export default function Pembayaran({ siswa, pembayarans }: PageProps) {
         certificateUrl={acceptedPayment?.suratlulus || null}
       />
       
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="min-h-screen bg-gray-100">
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-64">
             <Sidebar activePage="pembayaran" />
@@ -762,11 +761,11 @@ export default function Pembayaran({ siswa, pembayarans }: PageProps) {
                           {acceptedPayment && (
                             <div className="space-y-2 sm:col-span-2">
                               <div className="flex items-center">
-                                <p className="text-sm font-medium text-green-700 dark:text-green-400">
+                                <p className="text-sm font-medium text-green-700">
                                   Surat Lulus (Bukti Penerimaan)
                                 </p>
                                 {hasSuratLulus && (
-                                  <span className="ml-2 px-2 py-0.5 text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 rounded-full">
+                                  <span className="ml-2 px-2 py-0.5 text-xs bg-green-100 text-green-800 rounded-full">
                                     Tersedia
                                   </span>
                                 )}
@@ -783,7 +782,7 @@ export default function Pembayaran({ siswa, pembayarans }: PageProps) {
                       <div className="lg:hidden space-y-4">
                         {pembayarans.map((pembayaran) => (
                           <div key={pembayaran.id} 
-                            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 
+                            className="bg-white rounded-xl shadow-lg p-6 
                                      transform transition-all duration-300 hover:scale-[1.02]">
                             <div className="flex flex-col space-y-4">
                               <div className="flex justify-between items-start">
@@ -821,7 +820,7 @@ export default function Pembayaran({ siswa, pembayarans }: PageProps) {
                       {/* Desktop View */}
                       <div className="hidden lg:block">
                         <div className="rounded-xl overflow-hidden border border-primary/10">
-                          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                          <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-primary/5">
                               <tr>
                                 <th className="px-6 py-4 text-left text-sm font-semibold text-primary">
@@ -838,9 +837,9 @@ export default function Pembayaran({ siswa, pembayarans }: PageProps) {
                                 </th>
                               </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
+                            <tbody className="divide-y divide-gray-200 bg-white">
                               {pembayarans.map((pembayaran) => (
-                                <tr key={pembayaran.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <tr key={pembayaran.id} className="hover:bg-gray-50">
                                   <td className="px-6 py-4 text-sm">
                                     {pembayaran.kode_pembayaran}
                                   </td>
@@ -883,7 +882,7 @@ export default function Pembayaran({ siswa, pembayarans }: PageProps) {
                             className="w-full max-w-[300px] h-auto rounded-xl shadow-lg mx-auto 
                                      transform transition-all duration-300 hover:scale-105"
                           />
-                          <div className="prose prose-sm max-w-none dark:prose-invert">
+                          <div className="prose prose-sm max-w-none">
                             <ol className="list-decimal list-inside space-y-4">
                               <li className="flex items-center space-x-2">
                                 <span className="text-primary font-semibold">Transfer ke rekening Bank Nagari:</span>
