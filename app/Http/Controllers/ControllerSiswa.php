@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Pembayaran;
 use Illuminate\Support\Facades\DB;
+use App\Models\PembayaranDaftarUlang;
 
 class ControllerSiswa extends Controller
 {
@@ -16,14 +17,40 @@ class ControllerSiswa extends Controller
     {
         $siswa = Siswa::where('id_user', $request->user()->id)->first();
         
+        // Ambil data pembayaran jika siswa ada
+        $pembayaran = null;
+        if ($siswa) {
+            $pembayaran = Pembayaran::where('nik_siswa', $siswa->nik)
+                ->orderBy('created_at', 'desc')
+                ->first();
+        }
+        
         return Inertia::render('siswa/siswaprofil', [
-            'siswa' => $siswa
+            'siswa' => $siswa,
+            'pembayaran' => $pembayaran // Pass data pembayaran ke view
         ]);
     }
 
     public function store(Request $request)
     {
         $siswa = Siswa::where('id_user', $request->user()->id)->first();
+        
+        // Cek jika ini update data (siswa sudah ada)
+        if ($siswa) {
+            // Cek status pembayaran
+            $pembayaran = Pembayaran::where('nik_siswa', $siswa->nik)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            if ($pembayaran && $pembayaran->status === 'dibayar') {
+                // Jika pembayaran sudah diverifikasi, cek apakah ada percobaan mengubah beasiswa atau kelas
+                if ($siswa->beasiswa !== $request->beasiswa || $siswa->kelas !== $request->kelas) {
+                    return back()->withErrors([
+                        'error' => 'Beasiswa dan kelas tidak dapat diubah karena pembayaran telah diverifikasi.'
+                    ]);
+                }
+            }
+        }
         
         $validator = Validator::make($request->all(), [
             'nik' => 'required|string|size:16|' . ($siswa ? 'unique:siswa,nik,'.$siswa->nik.',nik' : 'unique:siswa,nik'),
@@ -59,6 +86,8 @@ class ControllerSiswa extends Controller
 
             $data = $request->except('foto');
             $data['id_user'] = $request->user()->id;
+            
+            // Handle foto upload
             if ($request->hasFile('foto')) {
                 $foto = $request->file('foto');
                 $fotoPath = $foto->store('foto_siswa', 'public');
@@ -70,11 +99,27 @@ class ControllerSiswa extends Controller
                 }
             }
 
+            // Hitung jumlah pembayaran berdasarkan status beasiswa
+            $jumlahPembayaran = $request->beasiswa === 'iya' ? 100000 : 200000;
+
             if ($siswa) {
+                // Update data siswa
                 $siswa->update($data);
+                
+                // Update jumlah pembayaran hanya jika status belum dibayar
+                if ($pembayaran && $pembayaran->status !== 'dibayar') {
+                    if (($request->beasiswa === 'iya' && $pembayaran->jumlah !== 100000) ||
+                        ($request->beasiswa === 'tidak' && $pembayaran->jumlah !== 200000)) {
+                        $pembayaran->update([
+                            'jumlah' => $jumlahPembayaran
+                        ]);
+                    }
+                }
             } else {
+                // Buat data siswa baru
                 $siswa = Siswa::create($data);
-                $jumlahPembayaran = $request->beasiswa === 'iya' ? 100000 : 200000;
+                
+                // Buat pembayaran baru
                 Pembayaran::create([
                     'kode_pembayaran' => 'PMB-' . date('Y') . '-' . str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT),
                     'jumlah' => $jumlahPembayaran,
@@ -100,16 +145,22 @@ class ControllerSiswa extends Controller
     {
         $siswa = Siswa::where('id_user', $request->user()->id)->first();
         $pembayarans = [];
+        $pembayaranDaftarUlang = null;
         
         if ($siswa) {
             $pembayarans = Pembayaran::where('nik_siswa', $siswa->nik)
                 ->orderBy('created_at', 'desc')
                 ->get();
+            
+            $pembayaranDaftarUlang = PembayaranDaftarUlang::where('nik_siswa', $siswa->nik)
+                ->orderBy('created_at', 'desc')
+                ->first();
         }
         
         return Inertia::render('siswa/pembayaran', [
             'siswa' => $siswa,
-            'pembayarans' => $pembayarans
+            'pembayarans' => $pembayarans,
+            'pembayaranDaftarUlang' => $pembayaranDaftarUlang
         ]);
     }
 

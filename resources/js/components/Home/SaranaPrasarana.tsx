@@ -1,4 +1,5 @@
 import {Users, ClipboardCheck, BookOpen, AirVent, Building2} from 'lucide-react'
+import Sarana from '@/assets/images/home/sarana.mp4'
 
 export default function SaranaPrasarana() {
     return (
@@ -16,66 +17,78 @@ export default function SaranaPrasarana() {
                                 </p>
                             </div>
                             <div className="bg-white rounded-2xl p-8 shadow-lg">
-                                <div className="flex flex-col md:flex-row gap-8">
-                                    <div className="w-full md:w-1/2">
-                                        <div className="relative w-full" style={{ paddingBottom: '120%' }}>
-                                            <iframe
-                                                src="https://www.instagram.com/reel/C4kY2lmtdiF/embed"
-                                                className="absolute top-0 left-0 w-full h-full rounded-xl"
-                                                frameBorder="0"
-                                                scrolling="no"
-                                                allowFullScreen
-                                                allow="encrypted-media; autoplay"
-                                            ></iframe>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <div className="w-full">
+                                        <div className="relative w-full">
+                                            <video
+                                                className="rounded-xl w-full shadow-lg"
+                                                autoPlay
+                                                controls
+                                                loop
+                                                playsInline
+                                                preload="metadata"
+                                            >
+                                                <source src={Sarana} type="video/mp4" />
+                                            </video>
                                         </div>
                                     </div>
-                                    <div className="w-full md:w-1/2 space-y-6">
-                                    <div className="flex items-start gap-4 hover:transform hover:scale-105 transition-all duration-300">
-                                            <div className="p-2 bg-[#FFF2F2] rounded-lg shadow-md">
-                                            <Users className="h-6 w-6 text-[#02188B]" />
-                                            </div>
-                                            <div className="bg-white p-4 rounded-lg shadow-md flex-1">
-                                                <h3 className="text-lg font-semibold text-[#02188B]">Staff Pengajar</h3>
-                                                <p className="text-[#706f6c]">Staff pengajar yang berpengalaman dan kompeten</p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-start gap-4 hover:transform hover:scale-105 transition-all duration-300">
-                                            <div className="p-2 bg-[#FFF2F2] rounded-lg shadow-md">
-                                                <ClipboardCheck className="h-6 w-6 text-[#02188B]" />
-                                            </div>
-                                            <div className="bg-white p-4 rounded-lg shadow-md flex-1">
-                                                <h3 className="text-lg font-semibold text-[#02188B]">Lab Komputer</h3>
-                                                <p className="text-[#706f6c]">Dilengkapi dengan perangkat komputer terbaru dan software industri</p>
+                                    <div className="grid grid-cols-1 gap-4">
+                                        <div className="group bg-white hover:bg-[#FFF2F2] rounded-xl p-4 transition-all duration-300 hover:shadow-lg border border-transparent hover:border-primary/10">
+                                            <div className="flex items-start gap-4">
+                                                <div className="p-3 bg-[#FFF2F2] group-hover:bg-white rounded-lg shadow-md transition-colors">
+                                                    <Users className="h-6 w-6 text-[#02188B]" />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h3 className="text-lg font-semibold text-[#02188B] mb-2">Staff Pengajar</h3>
+                                                    <p className="text-[#706f6c]">Staff pengajar yang berpengalaman dan kompeten</p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="flex items-start gap-4 hover:transform hover:scale-105 transition-all duration-300">
-                                            <div className="p-2 bg-[#FFF2F2] rounded-lg shadow-md">
-                                            <BookOpen className="h-6 w-6 text-[#02188B]" />
-                                            </div>
-                                            <div className="bg-white p-4 rounded-lg shadow-md flex-1">
-                                                <h3 className="text-lg font-semibold text-[#02188B]">Perpustakaan</h3>
-                                                <p className="text-[#706f6c]">Akses ke ribuan buku dan jurnal</p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-start gap-4 hover:transform hover:scale-105 transition-all duration-300">
-                                            <div className="p-2 bg-[#FFF2F2] rounded-lg shadow-md">
-                                            <AirVent className="h-6 w-6 text-[#02188B]" />
-                                            </div>
-                                            <div className="bg-white p-4 rounded-lg shadow-md flex-1">
-                                                <h3 className="text-lg font-semibold text-[#02188B]">Kelas dan Aula</h3>
-                                                <p className="text-[#706f6c]">Kelas dan Aula yang nyaman dan modern dengan full AC</p>
+                                        <div className="group bg-white hover:bg-[#FFF2F2] rounded-xl p-4 transition-all duration-300 hover:shadow-lg border border-transparent hover:border-primary/10">
+                                            <div className="flex items-start gap-4">
+                                                <div className="p-3 bg-[#FFF2F2] group-hover:bg-white rounded-lg shadow-md transition-colors">
+                                                    <ClipboardCheck className="h-6 w-6 text-[#02188B]" />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h3 className="text-lg font-semibold text-[#02188B] mb-2">Lab Komputer</h3>
+                                                    <p className="text-[#706f6c]">Dilengkapi dengan perangkat komputer terbaru dan software industri</p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="flex items-start gap-4 hover:transform hover:scale-105 transition-all duration-300">
-                                            <div className="p-2 bg-[#FFF2F2] rounded-lg shadow-md">
-                                            <Building2 className="h-6 w-6 text-[#02188B]" />
-                                            </div>
-                                            <div className="bg-white p-4 rounded-lg shadow-md flex-1">
-                                                <h3 className="text-lg font-semibold text-[#02188B]">Fasilitas Lainnya</h3>
-                                                <p className="text-[#706f6c]">Fasilitas lainnya yang tersedia di Jayanusa untuk menunjang kegiatan mahasiswa</p>
+                                        <div className="group bg-white hover:bg-[#FFF2F2] rounded-xl p-4 transition-all duration-300 hover:shadow-lg border border-transparent hover:border-primary/10">
+                                            <div className="flex items-start gap-4">
+                                                <div className="p-3 bg-[#FFF2F2] group-hover:bg-white rounded-lg shadow-md transition-colors">
+                                                    <BookOpen className="h-6 w-6 text-[#02188B]" />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h3 className="text-lg font-semibold text-[#02188B] mb-2">Perpustakaan</h3>
+                                                    <p className="text-[#706f6c]">Akses ke ribuan buku dan jurnal</p>
+                                                </div>
                                             </div>
                                         </div>
-                                     </div>
+                                        <div className="group bg-white hover:bg-[#FFF2F2] rounded-xl p-4 transition-all duration-300 hover:shadow-lg border border-transparent hover:border-primary/10">
+                                            <div className="flex items-start gap-4">
+                                                <div className="p-3 bg-[#FFF2F2] group-hover:bg-white rounded-lg shadow-md transition-colors">
+                                                    <AirVent className="h-6 w-6 text-[#02188B]" />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h3 className="text-lg font-semibold text-[#02188B] mb-2">Kelas dan Aula</h3>
+                                                    <p className="text-[#706f6c]">Kelas dan Aula yang nyaman dan modern dengan full AC</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="group bg-white hover:bg-[#FFF2F2] rounded-xl p-4 transition-all duration-300 hover:shadow-lg border border-transparent hover:border-primary/10">
+                                            <div className="flex items-start gap-4">
+                                                <div className="p-3 bg-[#FFF2F2] group-hover:bg-white rounded-lg shadow-md transition-colors">
+                                                    <Building2 className="h-6 w-6 text-[#02188B]" />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h3 className="text-lg font-semibold text-[#02188B] mb-2">Fasilitas Lainnya</h3>
+                                                    <p className="text-[#706f6c]">Fasilitas lainnya yang tersedia di Jayanusa untuk menunjang kegiatan mahasiswa</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

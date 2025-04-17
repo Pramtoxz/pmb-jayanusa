@@ -1,9 +1,9 @@
 import { Link } from '@inertiajs/react';
-import { UserCircle, CreditCard, LogOut } from 'lucide-react';
+import { UserCircle, CreditCard, LogOut, ArrowRightCircle } from 'lucide-react';
 import { router } from '@inertiajs/react';
 
 interface SidebarProps {
-  activePage: 'profile' | 'pembayaran';
+  activePage: 'profile' | 'pembayaran' | 'daftar-ulang';
 }
 
 export default function Sidebar({ activePage }: SidebarProps) {
@@ -19,6 +19,12 @@ export default function Sidebar({ activePage }: SidebarProps) {
       icon: <CreditCard className="w-5 h-5" />,
       href: route('siswa.pembayaran'),
       active: activePage === 'pembayaran'
+    },
+    {
+      title: 'Daftar Ulang',
+      icon: <ArrowRightCircle className="w-5 h-5" />,
+      href: route('siswa.daftar-ulang'),
+      active: activePage === 'daftar-ulang'
     }
   ];
 
@@ -27,7 +33,7 @@ export default function Sidebar({ activePage }: SidebarProps) {
   };
 
   return (
-    <div className="w-full sm:w-64 bg-white shadow-sm rounded-lg">
+    <div className="w-full lg:w-64 bg-white shadow-sm rounded-lg">
       <div className="p-4">
         <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
           Dashboard 

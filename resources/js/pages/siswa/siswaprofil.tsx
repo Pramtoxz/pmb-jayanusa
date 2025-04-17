@@ -27,6 +27,11 @@ interface SiswaData {
   beasiswa: string;
   kelas: string;
   fotoPreview: string | null;
+  pembayaran: { status: 'menunggu' | 'dibayar' | 'ditolak' }[];
+}
+
+interface PembayaranData {
+  status: 'menunggu' | 'dibayar' | 'ditolak';
 }
 
 interface FormDataType extends Omit<SiswaData, 'foto'> {
@@ -35,15 +40,17 @@ interface FormDataType extends Omit<SiswaData, 'foto'> {
 
 interface Props {
   siswa: SiswaData | null;
+  pembayaran?: PembayaranData;
   initialData?: FormDataType;
 }
 
-export default function SiswaProfile({ siswa }: Props) {
+export default function SiswaProfile({ siswa, pembayaran }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [alert] = useState<{
     type: 'success' | 'error' | null;
     message: string;
   }>({ type: null, message: '' });
+
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString('id-ID', {
@@ -115,10 +122,10 @@ export default function SiswaProfile({ siswa }: Props) {
                       </Button>
                       <div>
                         <h2 className="text-2xl font-bold text-primary">
-                          {siswa ? 'Edit Data Mahasiswa' : 'Pendaftaran Mahasiswa Baru'}
+                          {siswa ? 'Edit Data Calon Mahasiswa' : 'Pendaftaran Mahasiswa Baru'}
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                          {siswa ? 'Perbarui informasi data diri mahasiswa' : 'Silakan lengkapi form pendaftaran berikut'}
+                          {siswa ? 'Perbarui informasi data diri calon mahasiswa' : 'Silakan lengkapi form pendaftaran berikut'}
                         </p>
                       </div>
                     </div>
@@ -144,6 +151,7 @@ export default function SiswaProfile({ siswa }: Props) {
                         beasiswa: siswa.beasiswa,
                         kelas: siswa.kelas
                       } : undefined}
+                      pembayaran={pembayaran}
                     />
                   </div>
                 ) : (

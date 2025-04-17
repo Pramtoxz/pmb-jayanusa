@@ -34,6 +34,16 @@ interface PembayaranData {
 interface PageProps {
   siswa: SiswaData | null;
   pembayarans: PembayaranData[];
+  pembayaranDaftarUlang: {
+    id: number;
+    kode_pembayaran: string;
+    nik_siswa: string;
+    bank: string;
+    bukti_pembayaran: string | null;
+    keterangan: string | null;
+    status: 'menunggu' | 'dibayar' | 'ditolak';
+    catatan_admin: string | null;
+  } | null;
 }
 
 const UploadComponent = ({ pembayaran }: { pembayaran: PembayaranData }) => {
@@ -688,14 +698,14 @@ export default function Pembayaran({ siswa, pembayarans }: PageProps) {
         certificateUrl={acceptedPayment?.suratlulus || null}
       />
       
-      <div className="min-h-screen bg-gray-100">
-        <div className="flex flex-col lg:flex-row">
-          <div className="w-full lg:w-64">
-            <Sidebar activePage="pembayaran" />
-          </div>
+      <div className="container max-w-7xl mx-auto py-10 px-4 sm:px-6">
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Sidebar */}
+          <Sidebar activePage="pembayaran" />
 
-          <div className="flex-1 p-4 lg:p-8">
-            <Card className="max-w-[1200px] mx-auto">
+          {/* Main Content */}
+          <div className="flex-1">
+            <Card className="max-w-[1200px]">
               <CardContent className="p-6">
                 <div className="space-y-8">
                   {/* Header Section */}
@@ -712,7 +722,7 @@ export default function Pembayaran({ siswa, pembayarans }: PageProps) {
                     <div className="space-y-8">
                       {/* Info Mahasiswa dengan animasi */}
                       <div className="bg-gradient-to-r from-primary/5 to-blue-500/5 p-6 rounded-xl border border-primary/10">
-                        <h3 className="font-semibold text-primary mb-4">Data Mahasiswa</h3>
+                        <h3 className="font-semibold text-primary mb-4">Data Calon Mahasiswa</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           <div className="space-y-1">
                             <p className="text-sm text-muted-foreground">Nama</p>
@@ -777,6 +787,26 @@ export default function Pembayaran({ siswa, pembayarans }: PageProps) {
                           )}
                         </div>
                       </div>
+
+                      {acceptedPayment && hasSuratLulus && (
+                        <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                          <div className="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600 mt-0.5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
+                            <div>
+                              <p className="text-sm font-medium text-green-800">Pembayaran pendaftaran telah diterima</p>
+                              <p className="text-sm text-green-700 mt-1">
+                                Silakan lanjutkan ke halaman{' '}
+                                <a href="/siswa/daftar-ulang" className="font-medium underline hover:text-green-900">
+                                  Daftar Ulang
+                                </a>
+                                {' '}untuk melengkapi proses pendaftaran.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
 
                       {/* Mobile View */}
                       <div className="lg:hidden space-y-4">

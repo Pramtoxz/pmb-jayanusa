@@ -8,6 +8,7 @@ use App\Http\Controllers\PembayaranController;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\PembayaranDaftarUlangController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -21,6 +22,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/siswa/pembayaran/upload', [ControllerSiswa::class, 'uploadBuktiPembayaran'])->name('siswa.pembayaran.upload');
     Route::post('/siswa/skl/upload', [ControllerSiswa::class, 'uploadSKL'])->name('siswa.skl.upload');
     Route::post('/siswa/rapor/upload', [ControllerSiswa::class, 'uploadRapor'])->name('siswa.rapor.upload');
+    Route::post('/siswa/daftar-ulang', [PembayaranDaftarUlangController::class, 'store'])->name('siswa.daftar-ulang.store');
+    Route::put('/siswa/daftar-ulang/{pembayaranDaftarUlang}', [PembayaranDaftarUlangController::class, 'update'])->name('siswa.daftar-ulang.update');
+    Route::get('/siswa/daftar-ulang', [PembayaranDaftarUlangController::class, 'create'])->name('siswa.daftar-ulang');
 
     Route::middleware('admin')->group(function () {
         Route::resource('calon-mahasiswa', CalonMahasiswaController::class);
@@ -35,6 +39,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laporan/siswa', [LaporanController::class, 'siswa'])->name('laporan.siswa');
         Route::post('/laporan/siswa', [LaporanController::class, 'siswa'])->name('laporan.siswa.filter');
         Route::post('/laporan/siswa/download-pdf', [LaporanController::class, 'downloadPdfSiswa'])->name('laporan.siswa.download-pdf');
+        Route::get('/daftar-ulang', [PembayaranDaftarUlangController::class, 'index'])->name('daftar-ulang.index');
+        Route::put('/daftar-ulang/{pembayaranDaftarUlang}', [PembayaranDaftarUlangController::class, 'verify'])->name('daftar-ulang.verify');
     });
 
     // Route untuk Telegram

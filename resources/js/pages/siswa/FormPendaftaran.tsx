@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import LogoJayanusa from "@/assets/images/home/jayanusa.webp";
 import { PROVINCES, CITIES } from "@/data/indonesia";
+import { cn } from "@/lib/utils";
 
 interface FormData {
   nik: string;
@@ -37,11 +38,15 @@ interface FormData {
   kelas: string;
 }
 
+
 interface Props {
   initialData?: FormData;
+  pembayaran?: {
+    status: 'menunggu' | 'dibayar' | 'ditolak';
+  };
 }
 
-export default function FormPendaftaran({ initialData }: Props) {
+export default function FormPendaftaran({ initialData, pembayaran }: Props) {
   const [formData, setFormData] = useState<FormData>(initialData || {
     nik: '',
     nama: '',
@@ -66,6 +71,8 @@ export default function FormPendaftaran({ initialData }: Props) {
 
   const [isSubmitting] = useState(false);
   const [availableCities, setAvailableCities] = useState<string[]>([]);
+
+  const isFieldsDisabled = pembayaran?.status === 'dibayar';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -115,10 +122,10 @@ export default function FormPendaftaran({ initialData }: Props) {
         Swal.fire({
           icon: 'success',
           title: 'Pendaftaran Berhasil',
-          text: 'Untuk Tahapan Selanjutnya Silahkan Pilih Menu Pembayaran',
+          text: 'Untuk Tahapan Selanjutnya Silahkan Lakukan Pembayaran',
           confirmButtonColor: '#3085d6'
         }).then(() => {
-          router.visit('/siswa/profile');
+          router.visit('/siswa/pembayaran');
         });
       },
       onError: (errors: Record<string, string[] | string>) => {
@@ -241,45 +248,56 @@ export default function FormPendaftaran({ initialData }: Props) {
 
                 <div className="w-full sm:w-1/3 space-y-2">
                   <Label htmlFor="foto" className="italic font-medium">Foto 3x4</Label>
-                  <div className="relative flex flex-col items-center p-4 border-2 border-dashed rounded-lg hover:border-primary transition-colors duration-200">
+                  <div className="relative flex flex-col items-center p-4 border-2 border-dashed rounded-lg">
                     {formData.fotoPreview ? (
-                      <>
+                      <div className="space-y-4">
                         <img 
                           src={formData.fotoPreview} 
                           alt="Preview" 
                           className="w-full h-[200px] object-cover rounded-lg shadow-sm"
                         />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
-                          <p className="text-white text-sm">Klik untuk mengganti foto</p>
-                        </div>
-                        <Input
-                          type="file"
-                          id="foto"
-                          name="foto"
-                          onChange={handleFileChange}
-                          accept="image/*"
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                        />
-                      </>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="w-full"
+                          onClick={() => document.getElementById('foto')?.click()}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                          </svg>
+                          Ganti Foto
+                        </Button>
+                      </div>
                     ) : (
-                      <>
+                      <div className="space-y-4">
                         <div className="flex flex-col items-center justify-center w-full h-[200px] bg-muted/30 rounded-lg">
                           <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 mb-2 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
-                          <p className="text-sm text-muted-foreground">Klik untuk upload foto</p>
+                          <p className="text-sm text-muted-foreground text-center">Belum ada foto</p>
                           <p className="text-xs text-muted-foreground mt-1">Format: JPG, PNG (Max. 2MB)</p>
                         </div>
-                        <Input
-                          type="file"
-                          id="foto"
-                          name="foto"
-                          onChange={handleFileChange}
-                          accept="image/*"
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                        />
-                      </>
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          className="w-full"
+                          onClick={() => document.getElementById('foto')?.click()}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                          </svg>
+                          Upload Foto
+                        </Button>
+                      </div>
                     )}
+                    <Input
+                      type="file"
+                      id="foto"
+                      name="foto"
+                      onChange={handleFileChange}
+                      accept="image/*"
+                      className="hidden"
+                    />
                   </div>
                 </div>
               </div>
@@ -504,8 +522,12 @@ export default function FormPendaftaran({ initialData }: Props) {
                       kelas: value === 'iya' ? 'reguler' : prev.kelas 
                     }))
                   }
+                  disabled={isFieldsDisabled}
                 >
-                  <SelectTrigger className="transition-colors duration-200 focus:border-primary">
+                  <SelectTrigger className={cn(
+                    "transition-colors duration-200 focus:border-primary",
+                    isFieldsDisabled && "opacity-50 cursor-not-allowed"
+                  )}>
                     <SelectValue placeholder="Penerima Beasiswa KIP-Kuliah (Isi Tidak Jika Tidak Penerima)" />
                   </SelectTrigger>
                   <SelectContent>
@@ -521,6 +543,11 @@ export default function FormPendaftaran({ initialData }: Props) {
                     </SelectItem>
                   </SelectContent>
                 </Select>
+                {isFieldsDisabled && (
+                  <p className="text-xs text-yellow-600">
+                    *Beasiswa tidak dapat diubah karena pembayaran telah diverifikasi
+                  </p>
+                )}
               </div>
 
               {formData.beasiswa === 'tidak' && (
@@ -532,15 +559,32 @@ export default function FormPendaftaran({ initialData }: Props) {
                     onValueChange={(value) =>
                       setFormData(prev => ({ ...prev, kelas: value }))
                     }
+                    disabled={isFieldsDisabled}
                   >
-                    <SelectTrigger className="transition-colors duration-200 focus:border-primary">
+                    <SelectTrigger className={cn(
+                      "transition-colors duration-200 focus:border-primary",
+                      isFieldsDisabled && "opacity-50 cursor-not-allowed"
+                    )}>
                       <SelectValue placeholder="Pilih Kelas" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="reguler">Non Kerja</SelectItem>
-                      <SelectItem value="kerja">Kerja</SelectItem>
+                      <SelectItem value="reguler">
+                        <div className="flex items-center justify-between">
+                          <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Non Kerja</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="kerja">
+                        <div className="flex items-center justify-between">
+                          <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800">Kerja</span>
+                        </div>
+                      </SelectItem>
                     </SelectContent>
                   </Select>
+                  {isFieldsDisabled && (
+                    <p className="text-xs text-yellow-600">
+                      *Kelas tidak dapat diubah karena pembayaran telah diverifikasi
+                    </p>
+                  )}
                 </div>
               )}
             </div>
