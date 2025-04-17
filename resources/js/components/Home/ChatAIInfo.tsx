@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import AvatarAI from '@/assets/images/home/avatar-ai.png'
 import Norek from '@/assets/images/home/rekening.png'
-import messageSound from '@/assets/sound/message-sound.mp3'
+import messageSound from '@/assets/sound/akh.mp3'
 
 interface Message {
     role: 'ai' | 'user'
@@ -43,14 +43,18 @@ const menuItems: MenuItem[] = [
         keywords: ["daftar", "pendaftaran", "online", "registrasi", "form", "cara", "proses"],
         response: "Hai Sobat! JaVA siap bantu jawab pertanyaanmu ya! 😊\n\n" +
             "Untuk daftar online gampang banget kok! Begini caranya:\n" +
-            "1. Tinggal klik menu 'Pendaftaran Online' terus isi formnya\n" +
-            "2. Cetak bukti registrasinya\n" +
-            "3. Bisa transfer ke:\n" +
+            "1. Buat Akun Terlebih Dahulu di website kami\n" +
+            "2. Lengkapi Data Diri Kamu Dengan Klik Halaman Profile\n" +
+            "3. Jika sudah lengkap, Silahkan Klik Menu Pembayaran \n" +
+            "4. Lalu Silahkan upload Rapor dan SKL/Ijazah SLTA/Sederajat Kamu\n" +
+            "5. Setelah itu Kamu Bisa Transfer Ke Nomor Rekening Yang Sudah Tersedia \n" +
             `<img src="${Norek}" alt="No. Rekening" style="width: 1000px; height: auto; margin-top: 10px;" />`+
-            "4. Silahkan Upload bukti transfer di halaman profile ya \n" +
-            "5. Setelah itu kamu hanya perlu menunggu admin untuk menghubungi kamu \n" +
-            "6. Cieee ga Sabar pastinya Ya !!! \n" +
-            "7. Selamat Datang di STMIK-AMIK JAYANUSA"
+            "6. Setelah Melakukan Pembayaran, Silahkan Upload Bukti Transfer yang udah di sediain\n" +
+            "7. Setelah itu kamu hanya perlu menunggu verifikasi dari admin kami \n" +
+            "8. Cieee ga Sabar pastinya Ya !!! \n" +
+            "8. Kalau Semua Persyaratan sudah Oke dan Surat Lulus kamu di terbitkan \n" +
+            "8. Silahkan Upload Bukti Pembayaran Bukti Daftar Ulang karna langkah terakhir,Untuk Bergabung dengan kami \n" +
+            "10. Selamat Datang di STMIK-AMIK JAYANUSA"
 
    },
     {
@@ -83,6 +87,7 @@ const menuItems: MenuItem[] = [
             "   - Senin-Jumat: 17.00-21.00\n" +
             "   - Sabtu: 15.15-18.30"
     },
+    
     {
         title: "Pengen ngobrol sama Admin nih",
         keywords: ["admin", "cs", "customer service", "hubungi", "kontak", "wa", "whatsapp", "tanya", "info"],
@@ -210,6 +215,11 @@ const menuItems: MenuItem[] = [
             "   • Menunjang kegiatan mahasiswa\n\n" +
             "Mau lihat langsung fasilitasnya? Hubungi admin kita:\n" +
             `<span class="text-blue-600 hover:underline"><a href="${getWhatsAppURL()}" target="_blank" rel="noopener noreferrer">0811-6650-635</a></span>`
+    },
+    {
+        title: "Salam Pembuka",
+        keywords: ["hei", "halo", "hai", "salam", "assalamualaikum", "oi", "pagi", "siang", "malam", "selamat"],
+        response: "Halo! Saya JaVA, asisten virtual STMIK-AMIK JAYANUSA 😊\nAda yang bisa saya bantu?"
     }
 ]
 

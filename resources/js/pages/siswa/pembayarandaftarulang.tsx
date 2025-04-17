@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { router } from '@inertiajs/react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -11,9 +11,10 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import Lottie from 'lottie-react';
-import successAnimation from '@/assets/images/home/done.json';
+import successAnimation from '@/assets/images/home/yey.json';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import yeySound from '@/assets/sound/yey.mp3'
 
 interface PembayaranDaftarUlang {
   id: number;
@@ -30,14 +31,32 @@ interface PembayaranDaftarUlang {
 
 interface PembayaranDaftarUlangProps {
   pembayaranDaftarUlang: PembayaranDaftarUlang | null;
+  suratLulus: string | null;
 }
 
-export default function PembayaranDaftarUlang({ pembayaranDaftarUlang }: PembayaranDaftarUlangProps) {
+export default function PembayaranDaftarUlang({ pembayaranDaftarUlang, suratLulus }: PembayaranDaftarUlangProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [bank, setBank] = useState(pembayaranDaftarUlang?.bank || '');
   const [keterangan, setKeterangan] = useState(pembayaranDaftarUlang?.keterangan || '');
+
+  const playYeySound = () => {
+    try {
+      const sound = new Audio(yeySound)
+      sound.addEventListener('canplaythrough', () => {
+        sound.play().catch(e => console.error('Error playing:', e))
+      })
+    } catch (error) {
+      console.error('Error creating audio:', error)
+    }
+  }
+
+  useEffect(() => {
+    if (pembayaranDaftarUlang?.status === 'dibayar') {
+      setShowSuccessModal(true);
+    }
+  }, [pembayaranDaftarUlang?.status]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -73,6 +92,7 @@ export default function PembayaranDaftarUlang({ pembayaranDaftarUlang }: Pembaya
   const handleSuccess = () => {
     setIsUploading(false);
     setShowSuccessModal(true);
+    playYeySound();
   };
 
   const handleError = () => {
@@ -82,7 +102,29 @@ export default function PembayaranDaftarUlang({ pembayaranDaftarUlang }: Pembaya
 
   const handleCloseModal = () => {
     setShowSuccessModal(false);
+    playYeySound();
   };
+
+  // Jika surat lulus belum ada, tampilkan pesan
+  if (!suratLulus) {
+    return (
+      <div className="bg-gradient-to-r from-blue-500/5 to-green-500/5 p-6 rounded-xl border border-blue-500/10">
+        <div className="text-center">
+          <div className="w-24 h-24 mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-bold text-yellow-600 mb-2">
+            Surat Lulus Belum Tersedia
+          </h3>
+          <p className="text-gray-600">
+            Silakan tunggu hingga surat lulus Anda tersedia. Setelah surat lulus tersedia, Anda dapat melanjutkan ke tahap pembayaran daftar ulang.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gradient-to-r from-blue-500/5 to-green-500/5 p-6 rounded-xl border border-blue-500/10">
@@ -112,16 +154,16 @@ export default function PembayaranDaftarUlang({ pembayaranDaftarUlang }: Pembaya
           <div className="w-24 h-24 mx-auto mb-4">
             <Lottie
               animationData={successAnimation}
-              loop={false}
+              loop={true}
               autoplay
               className="w-full h-full"
             />
           </div>
           <h3 className="text-2xl font-bold text-green-600">
-            Pembayaran Diterima!
+             Selamat Datang di STMIK-AMIK JAYANUSA!
           </h3>
           <p className="mt-2 text-gray-600">
-            Selamat! Pembayaran Anda telah diverifikasi dan diterima. Anda resmi menjadi Mahasiswa Baru STMIK-AMIK Jayanusa.
+            Yeay! Kamu resmi menjadi bagian dari Keluarga Besar STMIK-AMIK Jayanusa. Siap mengeksplorasi dunia teknologi dan menjadi talenta digital masa depan! 💻✨
           </p>
           <p className="mt-2 text-sm text-gray-500">
             Silahkan Tunggu Admin Menginputkan Nomor HP anda ke Grup Mahasiswa Baru!
@@ -148,6 +190,17 @@ export default function PembayaranDaftarUlang({ pembayaranDaftarUlang }: Pembaya
               <SelectItem value="bni">BNI</SelectItem>
               <SelectItem value="bri">BRI</SelectItem>
               <SelectItem value="mandiri">Mandiri</SelectItem>
+              <SelectItem value="bca">BCA</SelectItem>
+              <SelectItem value="cimb">CIMB Niaga</SelectItem>
+              <SelectItem value="permata">Permata Bank</SelectItem>
+              <SelectItem value="danamon">Danamon</SelectItem>
+              <SelectItem value="btn">BTN</SelectItem>
+              <SelectItem value="bsi">BSI</SelectItem>
+              <SelectItem value="mega">Bank Mega</SelectItem>
+              <SelectItem value="ocbc">OCBC NISP</SelectItem>
+              <SelectItem value="panin">Panin Bank</SelectItem>
+              <SelectItem value="maybank">Maybank</SelectItem>
+              <SelectItem value="lainnya">Lainnya (Sertakan di Keterangan)</SelectItem>
             </SelectContent>
           </Select>
         </div>

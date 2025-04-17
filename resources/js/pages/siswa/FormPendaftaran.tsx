@@ -76,34 +76,39 @@ export default function FormPendaftaran({ initialData, pembayaran }: Props) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
+    
+    // Validasi untuk input angka
+    if (name === 'nik' || name === 'no_hp' || name === 'tahun_lulus') {
+      // Hanya menerima angka
+      const numericValue = value.replace(/[^0-9]/g, '');
       setFormData(prev => ({
         ...prev,
-        foto: file,
-        fotoPreview: URL.createObjectURL(file)
+        [name]: numericValue
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
       }));
     }
   };
 
-  const handleProvinsiChange = (value: string) => {
-    setFormData(prev => ({ 
-      ...prev, 
-      provinsi: value,
-      kota: '' // Reset kota ketika provinsi berubah
-    }));
-    setAvailableCities(CITIES[value] || []);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (formData.nik.length !== 16) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'NIK Belum Lengkap!',
+        text: 'Pastikan NIK terdiri dari 16 angka',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Mengerti',
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        }
+      });
+      return;
+    }
 
     const formDataToSend = new FormData();
     
@@ -162,6 +167,26 @@ export default function FormPendaftaran({ initialData, pembayaran }: Props) {
     });
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setFormData(prev => ({
+        ...prev,
+        foto: file,
+        fotoPreview: URL.createObjectURL(file)
+      }));
+    }
+  };
+
+  const handleProvinsiChange = (value: string) => {
+    setFormData(prev => ({ 
+      ...prev, 
+      provinsi: value,
+      kota: '' // Reset kota ketika provinsi berubah
+    }));
+    setAvailableCities(CITIES[value] || []);
+  };
+
   return (
     <div className="space-y-6">
       {/* Bagian Header/Profil */}
@@ -199,6 +224,8 @@ export default function FormPendaftaran({ initialData, pembayaran }: Props) {
                     <Label htmlFor="nik" className="font-medium">NIK <span className="text-destructive">*</span></Label>
                     <Input
                       type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       id="nik"
                       name="nik"
                       value={formData.nik}
@@ -437,11 +464,15 @@ export default function FormPendaftaran({ initialData, pembayaran }: Props) {
                   <div className="space-y-2">
                     <Label htmlFor="no_hp" className="font-medium">Nomor HP</Label>
                     <Input
-                      type="tel"
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       id="no_hp"
                       name="no_hp"
                       value={formData.no_hp}
                       onChange={handleChange}
+                      placeholder="Masukkan nomor HP"
+                      className="transition-colors duration-200 focus:border-primary"
                     />
                   </div>
                 </div>
@@ -470,10 +501,15 @@ export default function FormPendaftaran({ initialData, pembayaran }: Props) {
                   <Label htmlFor="tahun_lulus" className="font-medium">Tahun Lulus</Label>
                   <Input
                     type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     id="tahun_lulus"
                     name="tahun_lulus"
                     value={formData.tahun_lulus}
                     onChange={handleChange}
+                    maxLength={4}
+                    placeholder="Masukkan tahun lulus"
+                    className="transition-colors duration-200 focus:border-primary"
                   />
                 </div>
               </div>

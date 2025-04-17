@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Pembayaran;
 
 class PembayaranDaftarUlangController extends Controller
 {
@@ -127,10 +128,16 @@ class PembayaranDaftarUlangController extends Controller
         $siswa = Auth::user()->siswa;
         // Ambil data pembayaran daftar ulang berdasarkan nik siswa
         $pembayaranDaftarUlang = PembayaranDaftarUlang::where('nik_siswa', $siswa->nik)->first();
+        
+        // Ambil data surat lulus dari pembayaran yang sudah dibayar
+        $pembayaran = Pembayaran::where('nik_siswa', $siswa->nik)
+            ->where('status', 'dibayar')
+            ->first();
 
         return Inertia::render('siswa/daftarulang', [
             'siswa' => $siswa,
-            'pembayaranDaftarUlang' => $pembayaranDaftarUlang
+            'pembayaranDaftarUlang' => $pembayaranDaftarUlang,
+            'suratLulus' => $pembayaran?->suratlulus
         ]);
     }
 }

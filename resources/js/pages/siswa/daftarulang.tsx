@@ -23,9 +23,10 @@ interface PageProps {
     status: 'menunggu' | 'dibayar' | 'ditolak';
     catatan_admin: string | null;
   } | null;
+  suratLulus: string | null;
 }
 
-export default function DaftarUlang({ siswa, pembayaranDaftarUlang }: PageProps) {
+export default function DaftarUlang({ siswa, pembayaranDaftarUlang, suratLulus }: PageProps) {
   return (
     <>
       <Head title="Daftar Ulang" />
@@ -80,7 +81,10 @@ export default function DaftarUlang({ siswa, pembayaranDaftarUlang }: PageProps)
                       </div>
 
                       {/* Form Upload Daftar Ulang */}
-                      <PembayaranDaftarUlang pembayaranDaftarUlang={pembayaranDaftarUlang} />
+                      <PembayaranDaftarUlang 
+                        pembayaranDaftarUlang={pembayaranDaftarUlang} 
+                        suratLulus={suratLulus} 
+                      />
                     </div>
                   )}
                 </div>
