@@ -16,7 +16,6 @@ import uploadAnimation from '@/assets/images/home/success.json';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import yeySound from '@/assets/sound/yey.mp3'
-import Swal from 'sweetalert2';
 
 interface PembayaranDaftarUlang {
   id: number;
@@ -58,56 +57,23 @@ export default function PembayaranDaftarUlang({ pembayaranDaftarUlang, suratLulu
   useEffect(() => {
     if (pembayaranDaftarUlang?.status === 'dibayar') {
       setShowSuccessModal(true);
-      playYeySound();
     }
   }, [pembayaranDaftarUlang?.status]);
-
-  // Tambahkan fungsi untuk validasi form
-  const validateForm = () => {
-    if (!bank) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Bank Belum Dipilih',
-        text: 'Silakan pilih bank pengirim terlebih dahulu',
-        confirmButtonText: 'OK'
-      });
-      return false;
-    }
-    return true;
-  };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       
-      // Validasi form
-      if (!validateForm()) {
-        e.target.value = ''; // Reset input file
-        return;
-      }
-
       // Validasi ukuran file (max 2MB)
       if (file.size > 2 * 1024 * 1024) {
-        await Swal.fire({
-          icon: 'error',
-          title: 'Ukuran File Terlalu Besar',
-          text: 'Maksimal ukuran file adalah 2MB',
-          confirmButtonText: 'OK'
-        });
-        e.target.value = ''; // Reset input file
+        alert('Ukuran file terlalu besar. Maksimal 2MB');
         return;
       }
 
       // Validasi tipe file
       const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
       if (!allowedTypes.includes(file.type)) {
-        await Swal.fire({
-          icon: 'error',
-          title: 'Tipe File Tidak Didukung',
-          text: 'Gunakan format JPG, JPEG, atau PNG',
-          confirmButtonText: 'OK'
-        });
-        e.target.value = ''; // Reset input file
+        alert('Tipe file tidak didukung. Gunakan JPG, JPEG, atau PNG');
         return;
       }
 
@@ -118,56 +84,25 @@ export default function PembayaranDaftarUlang({ pembayaranDaftarUlang, suratLulu
       formData.append('bank', bank);
       formData.append('keterangan', keterangan);
       
-      // Ambil CSRF token dari meta tag
-      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-      if (csrfToken) {
-        formData.append('_token', csrfToken);
-      }
-
       setIsUploading(true);
 
       try {
-        const url = pembayaranDaftarUlang 
-          ? `/siswa/daftar-ulang/upload/${pembayaranDaftarUlang.id}`
-          : '/siswa/daftar-ulang/upload';
-        const method = 'post';
-        const headers: Record<string, string> = {};
-        if (csrfToken) {
-          headers['X-CSRF-TOKEN'] = csrfToken;
-        }
-
-        await router[method](url, formData, {
+        const url = '/siswa/daftar-ulang';
+        await router.post(url, formData, {
           onSuccess: () => {
             handleSuccess();
-            setShowUploadModal(true);
-            playYeySound();
-            // Refresh data setelah update berhasil
-            router.reload({ only: ['pembayaranDaftarUlang'] });
+            router.reload();
           },
           onError: (errors) => {
             handleError();
             console.error('Upload error:', errors);
-            Swal.fire({
-              icon: 'error',
-              title: 'Upload Gagal',
-              text: errors.message || 'Terjadi kesalahan saat mengupload file',
-              confirmButtonText: 'OK'
-            });
           },
-          preserveState: true,
           preserveScroll: true,
-          forceFormData: true,
-          headers
+          forceFormData: true
         });
       } catch (error) {
         handleError();
         console.error('Upload error:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Upload Gagal',
-          text: 'Terjadi kesalahan saat mengupload file',
-          confirmButtonText: 'OK'
-        });
       }
     }
   };
@@ -190,6 +125,15 @@ export default function PembayaranDaftarUlang({ pembayaranDaftarUlang, suratLulu
 
   const handleCloseUploadModal = () => {
     setShowUploadModal(false);
+  };
+
+  // Tambahkan fungsi untuk validasi form
+  const validateForm = () => {
+    if (!bank) {
+        alert('Silakan pilih bank pengirim terlebih dahulu');
+        return false;
+    }
+    return true;
   };
 
   // Jika surat lulus belum ada, tampilkan pesan
