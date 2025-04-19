@@ -23,7 +23,7 @@ export default function ProsesPendaftaran() {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [steps.length]);
 
   return (
     <section id="proses-pendaftaran" className="py-8 sm:py-12 md:py-16 bg-white">

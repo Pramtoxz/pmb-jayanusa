@@ -29,7 +29,7 @@ export default function Hero() {
 
     const interval = setInterval(changeImage, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [images.length]);
 
   return (
     <section className="relative min-h-screen overflow-hidden" id="home">
