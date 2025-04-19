@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import AvatarAI from '@/assets/images/home/avatar-ai.png'
 import Norek from '@/assets/images/home/rekening.png'
-import messageSound from '@/assets/sound/akh.mp3'
+import messageSound from '@/assets/sound/message-sound.mp3'
 
 interface Message {
     role: 'ai' | 'user'
@@ -55,26 +55,45 @@ const menuItems: MenuItem[] = [
             "8. Kalau Semua Persyaratan sudah Oke dan Surat Lulus kamu di terbitkan \n" +
             "8. Silahkan Upload Bukti Pembayaran Bukti Daftar Ulang karna langkah terakhir,Untuk Bergabung dengan kami \n" +
             "10. Selamat Datang di STMIK-AMIK JAYANUSA"
-
-   },
+    },
+    {
+        title: "Apa saja syarat dan berkas pendaftarannya?",
+        keywords: ["syarat", "berkas", "dokumen", "persyaratan", "kelengkapan", "file", "upload"],
+        response: "Hai Sobat! JaVA kasih tau syarat dan berkas pendaftarannya ya! 📋\n\n" +
+            "Syarat dan berkas yang perlu disiapkan:\n\n" +
+            "1. <span class='font-bold'>Berkas Akademik</span>\n" +
+            "   • Rapor SMA/SMK/Sederajat\n" +
+            "   • SKL/Ijazah SLTA/Sederajat\n\n" +
+            "2. <span class='font-bold'>Berkas Administrasi</span>\n" +
+            "   • Bukti Transfer Biaya Pendaftaran\n" +
+            "   • Bukti Daftar Ulang (setelah dinyatakan lulus)\n\n" +
+            "3. <span class='font-bold'>Data Diri</span>\n" +
+            "   • Foto diri\n" +
+            "   • Data diri lengkap\n" +
+            "   • Alamat email aktif\n" +
+            "   • Nomor telepon aktif\n\n" +
+            "Semua berkas harus diupload melalui website kami ya! 😊\n\n" +
+            "Mau info lebih detail? Hubungi admin kita:\n" +
+            `<span class="text-blue-600 hover:underline"><a href="${getWhatsAppURL()}" target="_blank" rel="noopener noreferrer">0811-6650-635</a></span>`
+    },
     {
         title: "Berapa ya biaya daftarnya?",
         keywords: ["biaya", "harga", "bayar", "transfer", "rekening", "uang", "dana"],
         response: "Hai Sobat! JaVA bantu jawab ya! 😊\n\n" +
-            "Untuk Biaya pendaftarannya cuma \n"+
-            "<span class='text-red-500'>Rp 200.000</span> aja nih\n" +
-            "untuk pendaftaran ada 2 cara ya, yaitu:\n" +
-            "1. <span class='font-bold'>Pendaftaran Offline</span>\n" +
-            "Kamu bisa datang langsung ke front office kampus kami ya\n" +
-            "2. <span class='font-bold'>Pendaftaran Online</span>\n" +
-            "1. Tinggal klik menu 'Pendaftaran Online' terus isi formnya\n" +
-            "2. Cetak bukti registrasinya\n" +
-            "3. Bisa transfer ke:\n" +
-            `<img src="${Norek}" alt="No. Rekening" style="width: 1000px; height: auto; margin-top: 10px;" />`+
-            "4. Silahkan Upload bukti transfer di halaman profile ya \n" +
-            "5. Setelah itu tunggu admin kami menghubungi kamu \n" +
-            "6. Cieee ga Sabar pastinya Ya !!! \n" +
-            "7. Selamat Datang di STMIK-AMIK JAYANUSA"},
+            "Untuk Biaya pendaftaran di STMIK-AMIK JAYANUSA adalah:\n\n" +
+            "1. <span class='font-bold'>Biaya Pendaftaran</span>\n" +
+            "   • <span class='text-red-500'>Rp 200.000</span> (Dua Ratus Ribu Rupiah)\n\n" +
+            "2. <span class='font-bold'>Biaya UKT per Semester</span>\n" +
+            "   • <span class='text-red-500'>Rp 3.900.000</span> (Tiga Juta Sembilan Ratus Ribu Rupiah)\n" +
+            "   • <span class='text-green-500 font-bold'>GRATIS Biaya Pembangunan!</span>\n\n" +
+            "Cara Pembayaran:\n" +
+            "1. Transfer ke rekening berikut:\n" +
+            `<img src="${Norek}" alt="No. Rekening" style="width: 1000px; height: auto; margin-top: 10px;" />` +
+            "2. Upload bukti transfer di halaman profile\n" +
+            "3. Tunggu verifikasi dari admin\n\n" +
+            "Mau info lebih detail? Hubungi admin kita:\n" +
+            `<span class="text-blue-600 hover:underline"><a href="${getWhatsAppURL()}" target="_blank" rel="noopener noreferrer">0811-6650-635</a></span>`
+    },
     {
         title: "Jadwal kuliah gimana ya?",
         keywords: ["jadwal", "waktu", "jam", "kuliah", "kelas", "jadwal", "jadwal"],
@@ -247,6 +266,245 @@ export default function ChatAIInfo() {
 
     const findBestMatch = (text: string): MenuItem | null => {
         const userText = text.toLowerCase()
+        
+        // Pola pertanyaan umum tentang syarat dan berkas
+        const syaratPatterns = [
+            /syarat.*apa/i,
+            /syarat.*daftar/i,
+            /syarat.*pendaftaran/i,
+            /persyaratan.*apa/i,
+            /persyaratan.*daftar/i,
+            /persyaratan.*pendaftaran/i,
+            /berkas.*apa/i,
+            /berkas.*daftar/i,
+            /berkas.*pendaftaran/i,
+            /dokumen.*apa/i,
+            /dokumen.*daftar/i,
+            /dokumen.*pendaftaran/i,
+            /kelengkapan.*apa/i,
+            /kelengkapan.*daftar/i,
+            /kelengkapan.*pendaftaran/i,
+            /file.*apa/i,
+            /file.*daftar/i,
+            /file.*pendaftaran/i,
+            /upload.*apa/i,
+            /upload.*daftar/i,
+            /upload.*pendaftaran/i,
+            /apa.*syarat/i,
+            /apa.*berkas/i,
+            /apa.*dokumen/i,
+            /apa.*kelengkapan/i,
+            /apa.*file/i,
+            /apa.*upload/i
+        ]
+
+        // Pola pertanyaan umum tentang biaya
+        const biayaPatterns = [
+            /biaya.*daftar/i,
+            /biaya.*pendaftaran/i,
+            /harga.*daftar/i,
+            /harga.*pendaftaran/i,
+            /uang.*daftar/i,
+            /uang.*pendaftaran/i,
+            /bayar.*daftar/i,
+            /bayar.*pendaftaran/i,
+            /berapa.*daftar/i,
+            /berapa.*pendaftaran/i,
+            /biaya.*kuliah/i,
+            /harga.*kuliah/i,
+            /uang.*kuliah/i,
+            /bayar.*kuliah/i,
+            /berapa.*kuliah/i,
+            /ukt.*berapa/i,
+            /spp.*berapa/i,
+            /biaya.*semester/i,
+            /harga.*semester/i,
+            /uang.*semester/i,
+            /bayar.*semester/i,
+            /berapa.*semester/i
+        ]
+
+        // Pola pertanyaan umum tentang pendaftaran
+        const daftarPatterns = [
+            /cara.*daftar/i,
+            /cara.*pendaftaran/i,
+            /gimana.*daftar/i,
+            /gimana.*pendaftaran/i,
+            /bagaimana.*daftar/i,
+            /bagaimana.*pendaftaran/i,
+            /proses.*daftar/i,
+            /proses.*pendaftaran/i,
+            /langkah.*daftar/i,
+            /langkah.*pendaftaran/i,
+            /syarat.*daftar/i,
+            /syarat.*pendaftaran/i,
+            /persyaratan.*daftar/i,
+            /persyaratan.*pendaftaran/i,
+            /dokumen.*daftar/i,
+            /dokumen.*pendaftaran/i,
+            /berkas.*daftar/i,
+            /berkas.*pendaftaran/i
+        ]
+
+        // Pola pertanyaan umum tentang program studi
+        const prodiPatterns = [
+            /jurusan.*apa/i,
+            /jurusan.*ada/i,
+            /prodi.*apa/i,
+            /prodi.*ada/i,
+            /program.*studi/i,
+            /fakultas.*apa/i,
+            /fakultas.*ada/i,
+            /kuliah.*apa/i,
+            /kuliah.*ada/i,
+            /pilihan.*jurusan/i,
+            /pilihan.*prodi/i,
+            /jurusan.*tersedia/i,
+            /prodi.*tersedia/i,
+            /jurusan.*yang.*ada/i,
+            /prodi.*yang.*ada/i,
+            /jurusan.*apa.*saja/i,
+            /prodi.*apa.*saja/i
+        ]
+
+        // Pola pertanyaan umum tentang jadwal
+        const jadwalPatterns = [
+            /jadwal.*kuliah/i,
+            /waktu.*kuliah/i,
+            /jam.*kuliah/i,
+            /kapan.*kuliah/i,
+            /hari.*kuliah/i,
+            /masuk.*kuliah/i,
+            /jam.*masuk/i,
+            /jam.*pulang/i,
+            /waktu.*masuk/i,
+            /waktu.*pulang/i,
+            /kuliah.*jam.*berapa/i,
+            /masuk.*jam.*berapa/i,
+            /pulang.*jam.*berapa/i
+        ]
+
+        // Pola pertanyaan umum tentang lokasi
+        const lokasiPatterns = [
+            /dimana.*kampus/i,
+            /dimana.*lokasi/i,
+            /alamat.*kampus/i,
+            /alamat.*lokasi/i,
+            /tempat.*kampus/i,
+            /tempat.*lokasi/i,
+            /letak.*kampus/i,
+            /letak.*lokasi/i,
+            /kampus.*dimana/i,
+            /lokasi.*dimana/i,
+            /alamat.*lengkap/i,
+            /maps.*kampus/i,
+            /google.*maps/i,
+            /petunjuk.*jalan/i
+        ]
+
+        // Pola pertanyaan umum tentang beasiswa
+        const beasiswaPatterns = [
+            /beasiswa.*apa/i,
+            /beasiswa.*ada/i,
+            /beasiswa.*tersedia/i,
+            /beasiswa.*yang.*ada/i,
+            /beasiswa.*apa.*saja/i,
+            /kip.*kuliah/i,
+            /kip.*k/i,
+            /bantuan.*kuliah/i,
+            /bantuan.*biaya/i,
+            /potongan.*biaya/i,
+            /diskon.*biaya/i
+        ]
+
+        // Pola pertanyaan umum tentang fasilitas
+        const fasilitasPatterns = [
+            /fasilitas.*apa/i,
+            /fasilitas.*ada/i,
+            /fasilitas.*tersedia/i,
+            /fasilitas.*yang.*ada/i,
+            /fasilitas.*apa.*saja/i,
+            /sarana.*prasarana/i,
+            /lab.*komputer/i,
+            /laboratorium/i,
+            /perpustakaan/i,
+            /ruang.*kelas/i,
+            /aula/i,
+            /gedung/i
+        ]
+
+        // Pola pertanyaan umum tentang UKM
+        const ukmPatterns = [
+            /ukm.*apa/i,
+            /ukm.*ada/i,
+            /ukm.*tersedia/i,
+            /ukm.*yang.*ada/i,
+            /ukm.*apa.*saja/i,
+            /organisasi.*mahasiswa/i,
+            /kegiatan.*mahasiswa/i,
+            /aktivitas.*kampus/i,
+            /ekstrakurikuler/i,
+            /unit.*kegiatan/i
+        ]
+
+        // Cek pola pertanyaan dan kembalikan respons yang sesuai
+        if (syaratPatterns.some(pattern => pattern.test(userText))) {
+            return menuItems.find(item => item.title === "Apa saja syarat dan berkas pendaftarannya?") || null
+        }
+
+        if (biayaPatterns.some(pattern => pattern.test(userText))) {
+            return menuItems.find(item => item.title === "Berapa ya biaya daftarnya?") || null
+        }
+
+        if (daftarPatterns.some(pattern => pattern.test(userText))) {
+            return menuItems.find(item => item.title === "Gimana sih cara daftar online?") || null
+        }
+
+        if (prodiPatterns.some(pattern => pattern.test(userText))) {
+            return menuItems.find(item => item.title === "Program Studi apa aja yang ada di Jayanusa?") || null
+        }
+
+        if (jadwalPatterns.some(pattern => pattern.test(userText))) {
+            return menuItems.find(item => item.title === "Jadwal kuliah gimana ya?") || null
+        }
+
+        if (lokasiPatterns.some(pattern => pattern.test(userText))) {
+            return menuItems.find(item => item.title === "Dimana nih lokasi lengkap kampusnya?") || null
+        }
+
+        if (beasiswaPatterns.some(pattern => pattern.test(userText))) {
+            return menuItems.find(item => item.title === "Ada program beasiswa gak?") || null
+        }
+
+        if (fasilitasPatterns.some(pattern => pattern.test(userText))) {
+            return menuItems.find(item => item.title === "Apa aja sih fasilitas kampusnya?") || null
+        }
+
+        if (ukmPatterns.some(pattern => pattern.test(userText))) {
+            return menuItems.find(item => item.title === "Apa aja sih UKM di Jayanusa?") || null
+        }
+
+        // Cek pertanyaan salam
+        const salamPatterns = [
+            /halo/i,
+            /hai/i,
+            /hei/i,
+            /assalamualaikum/i,
+            /selamat.*pagi/i,
+            /selamat.*siang/i,
+            /selamat.*malam/i,
+            /pagi/i,
+            /siang/i,
+            /malam/i,
+            /salam/i,
+            /apa.*kabar/i,
+            /kabar/i
+        ]
+
+        if (salamPatterns.some(pattern => pattern.test(userText))) {
+            return menuItems.find(item => item.title === "Salam Pembuka") || null
+        }
+
         const exactMatch = menuItems.find(item => 
             userText.includes(item.title.toLowerCase())
         )
@@ -291,8 +549,19 @@ export default function ChatAIInfo() {
             if (bestMatch) {
                 response = bestMatch.response
             } else {
-                response = 'Yahhh :( \n\nSayangnya,JaVA tidak memahami pertanyaan Anda... \n\n Tenang saja, jika pertanyaan kamu masih belum terjawab sempurna, jangan sungkan untuk menghubungi Admin kami melalui WhatsApp: \n\n' +
-                    `<a href="${getWhatsAppURL()}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">0811-6650-635</a>`
+                // Respons yang lebih ramah untuk pertanyaan tidak relevan
+                response = 'Hai Sobat! 😊\n\n' +
+                    'Maaf ya, sepertinya pertanyaanmu belum bisa saya jawab dengan tepat. ' +
+                    'Saya bisa membantu kamu dengan informasi tentang:\n\n' +
+                    '• Biaya dan cara pendaftaran\n' +
+                    '• Program studi yang tersedia\n' +
+                    '• Jadwal kuliah\n' +
+                    '• Lokasi kampus\n' +
+                    '• Beasiswa\n' +
+                    '• Fasilitas kampus\n' +
+                    '• UKM dan kegiatan mahasiswa\n\n' +
+                    'Atau kamu bisa langsung tanya ke admin kita ya:\n' +
+                    `<span class="text-blue-600 hover:underline"><a href="${getWhatsAppURL()}" target="_blank" rel="noopener noreferrer">0811-6650-635</a></span>`
             }
             playMessageSound()
             

@@ -2,8 +2,10 @@ import { Link } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
 import { type SharedData } from '@/types';
 import Ambasador from '@/assets/images/home/brandambasador.webp';
+import Putra from '@/assets/images/home/putra.svg';
 import JavaAI from '@/assets/images/home/java-ai.json';
 import Lottie from 'lottie-react';
+import { useState, useEffect } from 'react';
 
 interface PageProps {
   auth: SharedData['auth'];
@@ -12,6 +14,22 @@ interface PageProps {
 
 export default function Hero() {
   const { auth } = usePage<PageProps>().props;
+  const [currentImage, setCurrentImage] = useState(0);
+  const [opacity, setOpacity] = useState(1);
+  const images = [Ambasador, Putra];
+
+  useEffect(() => {
+    const changeImage = () => {
+      setOpacity(0);
+      setCurrentImage((prev) => (prev + 1) % images.length);
+      setTimeout(() => {
+        setOpacity(1);
+      }, 300);
+    };
+
+    const interval = setInterval(changeImage, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section className="relative min-h-screen overflow-hidden" id="home">
@@ -66,11 +84,12 @@ export default function Hero() {
         <div className="bg-[#02188B] relative overflow-hidden">
           <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
           <div className="relative h-full flex items-center justify-center p-12">
-            <div className="flex justify-center items-center w-full max-w-lg animate-fade-in">
+            <div className="flex justify-center items-center w-full max-w-lg">
               <img 
-                src={Ambasador}
-                alt="Brand Ambassador STMIK Jayanusa"
-                className="w-full max-w-[500px] transition-transform duration-300 hover:scale-105 mt-8"
+                src={images[currentImage]}
+                alt={currentImage === 0 ? "Brand Ambassador STMIK Jayanusa" : "Putra STMIK Jayanusa"}
+                className="w-full max-w-[700px] mt-8 transition-all duration-300"
+                style={{ opacity }}
               />
             </div>
           </div>
