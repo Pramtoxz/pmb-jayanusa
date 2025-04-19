@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\PembayaranDaftarUlang;
 
 class LaporanController extends Controller
 {
@@ -204,5 +205,90 @@ class LaporanController extends Controller
         ]);
 
         return $pdf->download('laporan-siswa.pdf');
+    }
+
+    public function daftarUlang(Request $request)
+    {
+        if ($request->isMethod('get') && !$request->has('tanggal_awal')) {
+            return Inertia::render('Laporan/DaftarUlang');
+        }
+
+        $request->validate([
+            'tanggal_awal' => 'required|date',
+            'tanggal_akhir' => 'required|date|after_or_equal:tanggal_awal',
+            'status' => 'nullable|string|in:dibayar,menunggu,ditolak,all',
+            'program_studi' => 'nullable|string|in:MI,SI,SK,all'
+        ]);
+
+        $tanggalAwal = $request->tanggal_awal . ' 00:00:00';
+        $tanggalAkhir = $request->tanggal_akhir . ' 23:59:59';
+
+        $query = PembayaranDaftarUlang::with('siswa')
+            ->whereBetween('created_at', [$tanggalAwal, $tanggalAkhir]);
+
+        if ($request->has('status') && $request->status && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+        if ($request->has('program_studi') && $request->program_studi && $request->program_studi !== 'all') {
+            $query->whereHas('siswa', function($q) use ($request) {
+                $q->where('program_studi', $request->program_studi);
+            });
+        }
+
+        $daftarUlang = $query->get();
+
+        return Inertia::render('Laporan/DaftarUlang', [
+            'flash' => [
+                'data' => [
+                    'data' => $daftarUlang,
+                    'total_siswa' => $daftarUlang->count(),
+                ]
+            ]
+        ]);
+    }
+
+    public function downloadPdfDaftarUlang(Request $request)
+    {
+        $request->validate([
+            'tanggal_awal' => 'required|date',
+            'tanggal_akhir' => 'required|date|after_or_equal:tanggal_awal',
+            'status' => 'nullable|string|in:dibayar,menunggu,ditolak,all',
+            'program_studi' => 'nullable|string|in:MI,SI,SK,all'
+        ]);
+
+        $tanggalAwal = $request->tanggal_awal . ' 00:00:00';
+        $tanggalAkhir = $request->tanggal_akhir . ' 23:59:59';
+
+        $query = PembayaranDaftarUlang::with('siswa')
+            ->whereBetween('created_at', [$tanggalAwal, $tanggalAkhir]);
+
+        if ($request->has('status') && $request->status !== 'all' && $request->status !== '') {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('program_studi') && $request->program_studi !== 'all' && $request->program_studi !== '') {
+            $query->whereHas('siswa', function($q) use ($request) {
+                $q->where('program_studi', $request->program_studi);
+            });
+        }
+
+        $daftarUlang = $query->get();
+        $totalSiswa = $daftarUlang->count();
+
+        $pdf = Pdf::loadView('laporan.daftar-ulang-pdf', [
+            'daftarUlang' => $daftarUlang,
+            'totalSiswa' => $totalSiswa,
+            'tanggalAwal' => $request->tanggal_awal,
+            'tanggalAkhir' => $request->tanggal_akhir,
+            'status' => $request->status === 'all' ? 'Semua Status' : ucfirst($request->status),
+            'program_studi' => $request->program_studi === 'all' ? 'Semua Program Studi' : match($request->program_studi) {
+                'MI' => 'D3-Manajemen Informatika',
+                'SI' => 'S1-Sistem Informasi',
+                'SK' => 'S1-Sistem Komputer',
+                default => $request->program_studi,
+            }
+        ]);
+
+        return $pdf->download('laporan-daftar-ulang.pdf');
     }
 } 

@@ -4,11 +4,13 @@ import { useAppearance } from '@/hooks/use-appearance';
 import { Monitor, Moon, Sun } from 'lucide-react';
 import { HTMLAttributes } from 'react';
 
+type Appearance = 'light' | 'dark' | 'system';
+
 export default function AppearanceToggleDropdown({ className = '', ...props }: HTMLAttributes<HTMLDivElement>) {
     const { appearance, updateAppearance } = useAppearance();
 
     const getCurrentIcon = () => {
-        switch (appearance) {
+        switch (appearance as Appearance) {
             case 'dark':
                 return <Moon className="h-5 w-5" />;
             case 'light':

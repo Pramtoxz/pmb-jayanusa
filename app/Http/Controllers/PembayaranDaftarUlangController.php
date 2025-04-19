@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Pembayaran;
+use Illuminate\Support\Facades\Log;
 
 class PembayaranDaftarUlangController extends Controller
 {
@@ -25,7 +26,7 @@ class PembayaranDaftarUlangController extends Controller
     {
         $request->validate([
             'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'bank' => 'required|in:nagari,bni,bri,mandiri',
+            'bank' => 'required|string',
             'keterangan' => 'nullable|string'
         ]);
 
@@ -88,27 +89,45 @@ class PembayaranDaftarUlangController extends Controller
     {
         $request->validate([
             'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'bank' => 'required|in:nagari,bni,bri,mandiri',
+            'bank' => 'required|string',
             'keterangan' => 'nullable|string'
         ]);
 
         try {
             DB::beginTransaction();
 
+            // Hapus file lama
             if ($pembayaranDaftarUlang->bukti_pembayaran) {
-                Storage::disk('public')->delete(str_replace('/storage/', '', $pembayaranDaftarUlang->bukti_pembayaran));
+                $oldPath = str_replace('/storage/', '', $pembayaranDaftarUlang->bukti_pembayaran);
+                Storage::disk('public')->delete($oldPath);
             }
 
+            // Upload file baru
             $file = $request->file('bukti_pembayaran');
             $filename = 'daftar_ulang_' . time() . '_' . $pembayaranDaftarUlang->kode_pembayaran . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('bukti_daftar_ulang', $filename, 'public');
-
+            
             $pembayaranDaftarUlang->update([
-                'bank' => $request->bank,
                 'bukti_pembayaran' => '/storage/' . $path,
+                'bank' => $request->bank,
                 'keterangan' => $request->keterangan,
                 'status' => 'menunggu',
                 'catatan_admin' => null
+            ]);
+
+            // Kirim notifikasi
+            $chatId = env('TELEGRAM_CHAT_ID', '');
+            $message = "⚠️ KAK LEN ADA UPLOAD ULANG PEMBAYARAN DAFTAR ULANG CEK SEKARANG JUGA!!! ⚠️\n\n" .
+                    "Nama Calon: {$pembayaranDaftarUlang->siswa->nama}\n" .
+                    "NIK: {$pembayaranDaftarUlang->nik_siswa}\n" .
+                    "Kode Pembayaran: {$pembayaranDaftarUlang->kode_pembayaran}\n" .
+                    "Bank: " . strtoupper($request->bank) . "\n" .
+                    "Status: Upload Ulang\n" .
+                    "Waktu Upload: " . now()->format('d-m-Y H:i:s');
+
+            \Telegram\Bot\Laravel\Facades\Telegram::sendMessage([
+                'chat_id' => $chatId,
+                'text' => $message,
             ]);
 
             DB::commit();
@@ -139,5 +158,95 @@ class PembayaranDaftarUlangController extends Controller
             'pembayaranDaftarUlang' => $pembayaranDaftarUlang,
             'suratLulus' => $pembayaran?->suratlulus
         ]);
+    }
+
+    public function upload(Request $request, PembayaranDaftarUlang $pembayaranDaftarUlang = null)
+    {
+        $request->validate([
+            'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'bank' => 'required|string',
+            'keterangan' => 'nullable|string'
+        ]);
+
+        try {
+            DB::beginTransaction();
+            
+            $siswa = Auth::user()->siswa;
+
+            if (!$siswa) {
+                throw new \Exception('Data siswa tidak ditemukan');
+            }
+
+            // Upload bukti pembayaran
+            $file = $request->file('bukti_pembayaran');
+            $filename = 'daftar_ulang_' . time() . '_' . ($pembayaranDaftarUlang ? $pembayaranDaftarUlang->kode_pembayaran : 'new') . '.' . $file->getClientOriginalExtension();
+            Storage::disk('public')->makeDirectory('bukti_daftar_ulang');
+            $path = $file->storeAs('bukti_daftar_ulang', $filename, 'public');
+
+            if ($pembayaranDaftarUlang) {
+                // Hapus file lama
+                if ($pembayaranDaftarUlang->bukti_pembayaran) {
+                    $oldPath = str_replace('/storage/', '', $pembayaranDaftarUlang->bukti_pembayaran);
+                    Storage::disk('public')->delete($oldPath);
+                }
+
+                // Update record
+                $pembayaranDaftarUlang->update([
+                    'bukti_pembayaran' => '/storage/' . $path,
+                    'bank' => $request->bank,
+                    'keterangan' => $request->keterangan,
+                    'status' => 'menunggu',
+                    'catatan_admin' => null
+                ]);
+
+                // Kirim notifikasi
+                $chatId = env('TELEGRAM_CHAT_ID', '');
+                $message = "⚠️ KAK LEN ADA UPLOAD ULANG PEMBAYARAN DAFTAR ULANG CEK SEKARANG JUGA!!! ⚠️\n\n" .
+                        "Nama Calon: {$pembayaranDaftarUlang->siswa->nama}\n" .
+                        "NIK: {$pembayaranDaftarUlang->nik_siswa}\n" .
+                        "Kode Pembayaran: {$pembayaranDaftarUlang->kode_pembayaran}\n" .
+                        "Bank: " . strtoupper($request->bank) . "\n" .
+                        "Status: Upload Ulang\n" .
+                        "Waktu Upload: " . now()->format('d-m-Y H:i:s');
+            } else {
+                // Generate kode pembayaran
+                $kodePembayaran = 'DU-' . date('Y') . '-' . str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT);
+
+                // Buat record baru
+                $pembayaranDaftarUlang = PembayaranDaftarUlang::create([
+                    'kode_pembayaran' => $kodePembayaran,
+                    'nik_siswa' => $siswa->nik,
+                    'bank' => $request->bank,
+                    'bukti_pembayaran' => '/storage/' . $path,
+                    'keterangan' => $request->keterangan,
+                    'status' => 'menunggu'
+                ]);
+
+                // Kirim notifikasi
+                $chatId = env('TELEGRAM_CHAT_ID', '');
+                $message = "⚠️ KAK LEN ADA NOTIFIKASI PEMBAYARAN DAFTAR ULANG CEK SEKARANG JUGA!!! ⚠️\n\n" .
+                        "Nama Calon: {$siswa->nama}\n" .
+                        "NIK: {$siswa->nik}\n" .
+                        "Kode Pembayaran: {$kodePembayaran}\n" .
+                        "Bank: " . strtoupper($request->bank) . "\n" .
+                        "Status: Menunggu Verifikasi\n" .
+                        "Waktu Upload: " . now()->format('d-m-Y H:i:s');
+            }
+
+            \Telegram\Bot\Laravel\Facades\Telegram::sendMessage([
+                'chat_id' => $chatId,
+                'text' => $message,
+            ]);
+
+            DB::commit();
+            return back()->with('message', 'Bukti pembayaran daftar ulang berhasil diupload');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            if (isset($path)) {
+                Storage::disk('public')->delete($path);
+            }
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 }

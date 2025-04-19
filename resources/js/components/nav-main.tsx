@@ -8,7 +8,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
         <SidebarGroup className="px-2 py-0">
             <SidebarGroupLabel>Platform</SidebarGroupLabel>
             <SidebarMenu>
-                {items.filter(item => item.title !== 'Laporan Pembayaran' && item.title !== 'Laporan Siswa').map((item) => (
+                {items.filter(item => item.title !== 'Laporan Pembayaran' && item.title !== 'Laporan Siswa' && item.title !== 'Laporan Daftar Ulang').map((item) => (
                     <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton  
                             asChild isActive={item.href === page.url}
@@ -24,7 +24,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
             </SidebarMenu>
             <SidebarGroupLabel>Laporan</SidebarGroupLabel>
             <SidebarMenu>
-                {items.filter(item => item.title === 'Laporan Pembayaran' || item.title === 'Laporan Siswa').map((item) => (
+                {items.filter(item => item.title === 'Laporan Pembayaran' || item.title === 'Laporan Siswa' || item.title === 'Laporan Daftar Ulang').map((item) => (
                     <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton  
                             asChild isActive={item.href === page.url}
