@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
 import { type SharedData } from '@/types';
 import Ambasador from '@/assets/images/home/brandambasador.webp';
-import Putra from '@/assets/images/home/putra.svg';
+import Putra from '@/assets/images/home/putra.webp';
 import JavaAI from '@/assets/images/home/java-ai.json';
 import Lottie from 'lottie-react';
 import { useState, useEffect } from 'react';
