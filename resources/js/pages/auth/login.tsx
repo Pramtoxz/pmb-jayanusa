@@ -130,28 +130,6 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         });
     };
 
-    // Tambahkan useEffect untuk menerapkan tema dari localStorage
-    useEffect(() => {
-        const savedThemeMode = localStorage.getItem('themeMode') as 'light' | 'dark' | 'system' || 'system';
-        
-        if (savedThemeMode === 'system') {
-            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            document.documentElement.classList.toggle('dark', systemPrefersDark);
-        } else {
-            document.documentElement.classList.toggle('dark', savedThemeMode === 'dark');
-        }
-        
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        const handleChange = () => {
-            if (savedThemeMode === 'system') {
-                document.documentElement.classList.toggle('dark', mediaQuery.matches);
-            }
-        };
-        
-        mediaQuery.addEventListener('change', handleChange);
-        return () => mediaQuery.removeEventListener('change', handleChange);
-    }, []);
-
     if (isLoading) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -172,14 +150,14 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
     return (
         <>
-            <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-[#1a1a1a] dark:via-[#0f1117] dark:to-black transition-all duration-500 p-4 sm:p-6 md:p-8">
+            <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 transition-all duration-500 p-4 sm:p-6 md:p-8">
                 <Head title="Login PPMB JAYANUSA">
                     <link rel="preload" href={LogoJayanusa} as="image" />
                 </Head>
                 
                 <div className="w-full max-w-md">
-                    <div className="bg-white dark:bg-[#1a1a1a]/80 rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-2xl dark:border dark:border-[#dd00ff]/20">
-                        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-[#b800e6] dark:via-[#dd00ff] dark:to-[#ff00ff] p-6 sm:p-8 flex flex-col items-center relative overflow-hidden">
+                    <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-2xl">
+                        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 sm:p-8 flex flex-col items-center relative overflow-hidden">
                             <div className="absolute top-0 left-0 w-full h-full">
                                 <div className="absolute -top-10 -left-10 w-40 h-40 bg-blue-400 opacity-20 rounded-full"></div>
                                 <div className="absolute top-20 -right-10 w-32 h-32 bg-indigo-400 opacity-20 rounded-full"></div>
@@ -193,7 +171,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                 />
                             </div>
                             <h1 className="text-white text-2xl font-bold text-center z-10">
-                                Penerimaan Pendaftaran Mahasiswa Baru
+                                Sistem Penerimaan Pendaftaran Mahasiswa Baru
                             </h1>
                             <p className="text-blue-100 text-sm mt-1 z-10">
                                 STMIK - AMIK JAYANUSA
@@ -218,7 +196,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                             value={data.email}
                                             onChange={(e) => setData('email', e.target.value)}
                                             placeholder="Masukkan email Anda"
-                                            className="w-full pl-10 pr-3 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
+                                            className="w-full pl-10 pr-3 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         />
                                     </div>
                                     <InputError message={errors.email} />
@@ -251,7 +229,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                             value={data.password}
                                             onChange={(e) => setData('password', e.target.value)}
                                             placeholder="Masukkan password"
-                                            className="w-full pl-10 pr-10 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
+                                            className="w-full pl-10 pr-10 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         />
                                         <button
                                             type="button"
@@ -284,7 +262,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                 <div>
                                     <button 
                                         type="submit" 
-                                        className="w-full py-2.5 px-4 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-[#b800e6] dark:via-[#dd00ff] dark:to-[#ff00ff] hover:from-blue-700 hover:to-indigo-800 dark:hover:from-[#a500cc] dark:hover:via-[#c700e6] dark:hover:to-[#e600e6] text-white font-medium shadow-md hover:shadow-lg transform transition-all duration-300 hover:-translate-y-0.5 flex items-center justify-center"
+                                        className="w-full py-2.5 px-4 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-medium shadow-md hover:shadow-lg transform transition-all duration-300 hover:-translate-y-0.5 flex items-center justify-center"
                                         disabled={processing}
                                     >
                                         {processing ? (
@@ -311,29 +289,29 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                 </div>
                             )}
 
-                            <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+                            <div className="mt-6 text-center text-sm text-gray-600">
                                 Belum punya akun?{' '}
                                 <TextLink 
                                     href={route('register')} 
-                                    className="text-blue-600 hover:text-blue-800 dark:text-[#dd00ff] dark:hover:text-[#ff00ff] font-medium transition-colors duration-200"
+                                    className="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"
                                 >
                                     Daftar sekarang
                                 </TextLink>
                             </div>
 
-                            <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+                            <div className="mt-6 text-center text-sm text-gray-600">
                                 Etss... Udah Follow Instagram Jayanusa Belum?{' '}
                                 <a href="https://www.instagram.com/stmikamikjayanusa/" 
                                    target="_blank" 
                                    rel="noopener noreferrer" 
-                                   className="text-blue-600 hover:text-blue-800 dark:text-[#dd00ff] dark:hover:text-[#ff00ff] font-medium transition-colors duration-200">
+                                   className="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200">
                                     Klik Disini!
                                 </a>
                             </div>
                         </div>
                     </div>
 
-                    <div className="mt-6 text-center text-xs text-gray-500 dark:text-gray-400 font-medium">
+                    <div className="mt-6 text-center text-xs text-gray-500 font-medium">
                         &copy; {new Date().getFullYear()} STMIK - AMIK JAYANUSA. Hak Cipta Dilindungi.
                     </div>
                 </div>
@@ -356,19 +334,19 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             />
                         </div>
                         <div className="flex-1">
-                            <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 relative">
+                            <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-100 relative">
                                 <div className="absolute -left-2 top-4 transform -translate-y-1/2">
-                                    <div className="w-0 h-0 border-t-8 border-t-transparent border-r-8 border-r-white dark:border-r-gray-800 border-b-8 border-b-transparent"></div>
+                                    <div className="w-0 h-0 border-t-8 border-t-transparent border-r-8 border-r-white border-b-8 border-b-transparent"></div>
                                 </div>
-                                <p className="text-sm text-gray-700 dark:text-gray-300">
-                                    <span className="font-medium text-blue-600 dark:text-blue-400">JaVa:</span> {currentCaptcha.question}
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium text-blue-600">JaVa:</span> {currentCaptcha.question}
                                 </p>
                             </div>
                             <input
                                 type="text"
                                 value={data.captchaAnswer}
                                 onChange={(e) => setData('captchaAnswer', e.target.value)}
-                                className="mt-3 w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="mt-3 w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                 placeholder="Ketik jawaban Anda di sini"
                             />
                             {captchaError && (
@@ -376,7 +354,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                     </svg>
-                                    <p className="text-sm text-red-600 dark:text-red-400">
+                                    <p className="text-sm text-red-600">
                                         {captchaError}
                                     </p>
                                 </div>
@@ -387,7 +365,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         <button
                             type="button"
                             onClick={generateCaptcha}
-                            className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 flex items-center"
+                            className="text-sm text-blue-600 hover:text-blue-800 flex items-center"
                         >
                             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />

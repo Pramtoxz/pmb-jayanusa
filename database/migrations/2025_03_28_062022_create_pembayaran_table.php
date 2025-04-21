@@ -17,6 +17,9 @@ return new class extends Migration
             $table->decimal('jumlah', 10, 2);
             $table->enum('status', ['menunggu', 'dibayar', 'ditolak'])->default('menunggu');
             $table->string('bukti_pembayaran')->nullable();
+            $table->string('skl')->nullable();
+            $table->string('rapor')->nullable();
+            $table->string('suratlulus')->nullable();
             $table->text('keterangan')->nullable();
             $table->string('nik_siswa');
             $table->foreign('nik_siswa')
