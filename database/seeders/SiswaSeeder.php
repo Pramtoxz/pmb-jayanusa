@@ -30,7 +30,8 @@ class SiswaSeeder extends Seeder
                     'name' => "Siswa Test {$i}",
                     'email' => "siswa{$i}@example.com",
                     'password' => Hash::make('1234'),
-                    'role' => 'user'
+                    'role' => 'user',
+                    'email_verified_at' => now(),
                 ]);
 
                 // Generate NIK unik 16 digit
@@ -74,7 +75,10 @@ class SiswaSeeder extends Seeder
                     'status' => ['menunggu', 'dibayar', 'ditolak'][rand(0, 2)],
                     'nik_siswa' => $nik,
                     'keterangan' => 'Biaya Pendaftaran Mahasiswa Baru',
-                    'bukti_pembayaran' => null
+                    'bukti_pembayaran' => null,
+                    'skl' => null,
+                    'rapor' => null,
+                    'suratlulus' => null,
                 ]);
             });
         }

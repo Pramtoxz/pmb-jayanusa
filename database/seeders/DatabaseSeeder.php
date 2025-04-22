@@ -13,20 +13,32 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Buat User Admin dan User Biasa Dulu
+        User::firstOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Admin',
+                'role' => 'admin',
+                'password' => Hash::make('1234'), // Ganti password default jika perlu
+                'email_verified_at' => now(),
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'User',
-            'email' => 'user@example.com',
-            'role' => 'user',
-            'password' => Hash::make('1234'),
-        ]);
+        User::firstOrCreate(
+             ['email' => 'user@example.com'],
+             [
+                'name' => 'User',
+                'role' => 'user',
+                'password' => Hash::make('1234'), // Ganti password default jika perlu
+                'email_verified_at' => now(),
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
-            'role' => 'admin',
-            'password' => Hash::make('1234'),
+
+        // Panggil seeder lain
+        $this->call([
+            SiswaSeeder::class, // Jalankan ini dulu untuk membuat siswa dan pembayaran pendaftaran
+            PembayaranDaftarUlangSeeder::class, // Baru jalankan ini setelah siswa ada
         ]);
     }
 }

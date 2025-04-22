@@ -5,15 +5,15 @@ import JavaAI from '@/assets/images/home/java-ai.json';
 export default function ProsesPendaftaran() {
   const [currentStep, setCurrentStep] = useState(0);
   const steps = [
-    "Buat Akun Terlebih Dahulu di website kami",
+    "Buat Akun Terlebih Dahulu di website kami dengan klik tombol Daftar sekarang",
     "Lengkapi Data Diri Kamu Dengan Klik Halaman Profile",
     "Jika sudah lengkap, Silahkan Klik Menu Pembayaran",
     "Lalu Silahkan upload Rapor dan SKL/Ijazah SLTA/Sederajat Kamu",
     "Setelah itu Kamu Bisa Transfer Ke Nomor Rekening Yang Sudah Tersedia",
-    "Setelah Melakukan Pembayaran, Silahkan Upload Bukti Transfer yang udah di sediain",
+    "Setelah Melakukan Pembayaran, Silahkan Upload Bukti Transfer yang sudah di sediain",
     "Setelah itu kamu hanya perlu menunggu verifikasi dari admin kami",
     "Kalau Semua Persyaratan sudah Oke dan Surat Lulus kamu di terbitkan",
-    "Silahkan Upload Bukti Pembayaran Bukti Daftar Ulang karna langkah terakhir,Untuk Bergabung dengan kami",
+    "Silahkan Upload Bukti Pembayaran Daftar Ulang karna langkah terakhir,Untuk Bergabung dengan kami",
     "Selamat Datang di STMIK-AMIK JAYANUSA"
   ];
 
@@ -30,7 +30,7 @@ export default function ProsesPendaftaran() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Proses Pendaftaran
+            Alur Pendaftaran
           </h2>
         </div>
 

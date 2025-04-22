@@ -5,6 +5,7 @@ import Footer from '@/components/Home/Footer';
 import Hero from '@/components/Home/Hero';
 import ProgramStudi from '@/components/Home/ProgramStudi';
 import JadwalPerkuliahan from '@/components/Home/JadwalPerkuliahan';
+import VisiMisi from '@/components/Home/VisiMisi';
 import SaranaPrasarana from '@/components/Home/SaranaPrasarana';
 import ProgramBeasiswa from '@/components/Home/ProgramBeasiswa';
 import ProgramKerjasama from '@/components/Home/ProgramKerjasama';
@@ -52,6 +53,7 @@ export default function Welcome() {
                 
                 <main className="flex-grow">
                     <Hero />
+                    <VisiMisi />
                     <ProsesPendaftaran />
                     <ProgramStudi />
                     <JadwalPerkuliahan />
