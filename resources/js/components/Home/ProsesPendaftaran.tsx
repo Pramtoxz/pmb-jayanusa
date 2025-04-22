@@ -32,7 +32,11 @@ export default function ProsesPendaftaran() {
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Alur Pendaftaran
           </h2>
-        </div>
+          <p className="text-[#706f6c] text-lg max-w-2xl mx-auto">
+            Ikuti langkah-langkah berikut untuk mendaftar di STMIK-AMIK Jayanusa. Pastikan Anda mengikuti setiap langkah dengan seksama untuk memastikan pendaftaran yang sukses.
+            <br />
+            </p>
+          </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           {steps.map((step, index) => (
