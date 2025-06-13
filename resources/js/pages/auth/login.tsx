@@ -1,6 +1,6 @@
 import { Head, useForm } from '@inertiajs/react';
 import { useState, useEffect, useCallback } from 'react';
-import { Eye, EyeOff, User, Lock, LogIn } from 'lucide-react';
+import { Eye, EyeOff, User, Lock, LogIn, RefreshCw, ShieldCheck } from 'lucide-react';
 import { FormEventHandler } from 'react';
 import Lottie from 'lottie-react';
 import animationData from '@/assets/images/home/java-ai.json';
@@ -47,12 +47,49 @@ const captchaQuestions = [
     { question: "Apa warna langit di siang hari?", answers: ["biru"] }
 ];
 
+// Generate pertanyaan matematika sederhana
+const generateMathCaptcha = () => {
+    const operations = ['+', '-', '×'];
+    const operation = operations[Math.floor(Math.random() * operations.length)];
+    
+    let num1, num2, answer;
+    
+    switch(operation) {
+        case '+':
+            num1 = Math.floor(Math.random() * 10) + 1;
+            num2 = Math.floor(Math.random() * 10) + 1;
+            answer = (num1 + num2).toString();
+            break;
+        case '-':
+            num1 = Math.floor(Math.random() * 10) + 5;
+            num2 = Math.floor(Math.random() * 5) + 1;
+            answer = (num1 - num2).toString();
+            break;
+        case '×':
+            num1 = Math.floor(Math.random() * 5) + 1;
+            num2 = Math.floor(Math.random() * 5) + 1;
+            answer = (num1 * num2).toString();
+            break;
+        default:
+            num1 = 1;
+            num2 = 1;
+            answer = "2";
+    }
+    
+    return {
+        question: `Berapa hasil ${num1} ${operation} ${num2}?`,
+        answers: [answer]
+    };
+};
+
 export default function Login({ status, canResetPassword }: LoginProps) {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [currentCaptcha, setCurrentCaptcha] = useState({ question: "", answers: [""] });
     const [captchaError, setCaptchaError] = useState("");
     const [showCaptcha, setShowCaptcha] = useState(false);
+    const [verifyEnabled, setVerifyEnabled] = useState(false);
+    const [captchaType, setCaptchaType] = useState<'text' | 'math'>('text'); 
 
     const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
         email: '',
@@ -63,15 +100,37 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
     // Generate pertanyaan CAPTCHA acak
     const generateCaptcha = useCallback(() => {
-        const randomIndex = Math.floor(Math.random() * captchaQuestions.length);
-        setCurrentCaptcha(captchaQuestions[randomIndex]);
+        // Randomly decide whether to use text or math captcha
+        const useMathCaptcha = Math.random() > 0.5;
+        
+        if (useMathCaptcha) {
+            setCaptchaType('math');
+            setCurrentCaptcha(generateMathCaptcha());
+        } else {
+            setCaptchaType('text');
+            const randomIndex = Math.floor(Math.random() * captchaQuestions.length);
+            setCurrentCaptcha(captchaQuestions[randomIndex]);
+        }
+        
         setData('captchaAnswer', '');
         setCaptchaError('');
+        setVerifyEnabled(false);
+        
+        // Enable verify button after a short delay
+        setTimeout(() => setVerifyEnabled(true), 800);
     }, [setData]);
 
+    // Generate CAPTCHA when component mounts
     useEffect(() => {
         generateCaptcha();
     }, [generateCaptcha]);
+    
+    // When dialog closes, regenerate CAPTCHA for next time
+    useEffect(() => {
+        if (!showCaptcha) {
+            generateCaptcha();
+        }
+    }, [showCaptcha, generateCaptcha]);
 
     // Validasi CAPTCHA
     const validateCaptcha = (): boolean => {
@@ -88,10 +147,14 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+        // Generate CAPTCHA baru setiap kali tombol login diklik
+        generateCaptcha();
         setShowCaptcha(true);
     };
 
     const handleCaptchaSubmit = () => {
+        if (!verifyEnabled) return;
+        
         if (!validateCaptcha()) {
             return;
         }
@@ -317,66 +380,87 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                 </div>
             </div>
 
-            <Dialog open={showCaptcha} onOpenChange={setShowCaptcha}>
+            <Dialog open={showCaptcha} onOpenChange={(open) => {
+                setShowCaptcha(open);
+                if (!open) generateCaptcha();
+            }}>
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader>
-                        <DialogTitle>Verifikasi Keamanan</DialogTitle>
+                        <DialogTitle className="flex items-center">
+                            <ShieldCheck className="h-5 w-5 mr-2 text-blue-600" />
+                            Verifikasi Keamanan
+                        </DialogTitle>
                         <DialogDescription>
                             Mohon jawab pertanyaan berikut agar jaVa tidak mengira bahwa kamu ROBOT
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="flex items-start space-x-4 p-4">
-                        <div className="w-24 h-24 flex-shrink-0">
-                            <Lottie 
-                                animationData={animationData} 
-                                loop={true}
-                                autoplay={true}
-                            />
-                        </div>
-                        <div className="flex-1">
-                            <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-100 relative">
-                                <div className="absolute -left-2 top-4 transform -translate-y-1/2">
-                                    <div className="w-0 h-0 border-t-8 border-t-transparent border-r-8 border-r-white border-b-8 border-b-transparent"></div>
-                                </div>
-                                <p className="text-sm text-gray-700">
-                                    <span className="font-medium text-blue-600">JaVa:</span> {currentCaptcha.question}
-                                </p>
+                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-2">
+                        <div className="flex items-start space-x-4">
+                            <div className="w-24 h-24 flex-shrink-0">
+                                <Lottie 
+                                    animationData={animationData} 
+                                    loop={true}
+                                    autoplay={true}
+                                />
                             </div>
-                            <input
-                                type="text"
-                                value={data.captchaAnswer}
-                                onChange={(e) => setData('captchaAnswer', e.target.value)}
-                                className="mt-3 w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                placeholder="Ketik jawaban Anda di sini"
-                            />
-                            {captchaError && (
-                                <div className="mt-2 flex items-center space-x-2">
-                                    <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                    </svg>
-                                    <p className="text-sm text-red-600">
-                                        {captchaError}
+                            <div className="flex-1">
+                                <div className={`
+                                    bg-white p-3.5 rounded-lg shadow-sm border border-gray-100 relative 
+                                    ${captchaType === 'math' ? 'border-l-4 border-l-blue-500' : ''}
+                                `}>
+                                    <div className="absolute -left-2 top-4 transform -translate-y-1/2">
+                                        <div className="w-0 h-0 border-t-8 border-t-transparent border-r-8 border-r-white border-b-8 border-b-transparent"></div>
+                                    </div>
+                                    <p className="text-sm text-gray-700">
+                                        <span className="font-medium text-blue-600">JaVa:</span> {currentCaptcha.question}
                                     </p>
                                 </div>
-                            )}
+                                <div className="mt-3">
+                                    <label htmlFor="captcha-answer" className="text-xs text-gray-500 mb-1 block">Jawaban Anda:</label>
+                                    <input
+                                        id="captcha-answer"
+                                        type="text"
+                                        value={data.captchaAnswer}
+                                        onChange={(e) => setData('captchaAnswer', e.target.value)}
+                                        className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        placeholder="Ketik jawaban Anda di sini"
+                                        autoComplete="off"
+                                        autoFocus
+                                    />
+                                </div>
+                                {captchaError && (
+                                    <div className="mt-2 flex items-center space-x-2 p-2 bg-red-50 rounded-md">
+                                        <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        </svg>
+                                        <p className="text-sm text-red-600">
+                                            {captchaError}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
-                    <div className="flex justify-between mt-4">
+                    <div className="flex justify-between items-center mt-4">
                         <button
                             type="button"
                             onClick={generateCaptcha}
                             className="text-sm text-blue-600 hover:text-blue-800 flex items-center"
                         >
-                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                            </svg>
+                            <RefreshCw className="w-4 h-4 mr-1" />
                             Ganti Pertanyaan
                         </button>
                         <button
                             type="button"
                             onClick={handleCaptchaSubmit}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                            disabled={!verifyEnabled}
+                            className={`px-4 py-2 bg-blue-600 text-white rounded-lg transition-all duration-200 flex items-center ${
+                                verifyEnabled 
+                                    ? "hover:bg-blue-700" 
+                                    : "opacity-50 cursor-not-allowed"
+                            }`}
                         >
+                            <ShieldCheck className="w-4 h-4 mr-2" />
                             Verifikasi
                         </button>
                     </div>

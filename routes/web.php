@@ -52,6 +52,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/pembayaran-daftar-ulang', [AdminPembayaranDaftarUlangController::class, 'index'])->name('admin.pembayaran-daftar-ulang.index');
         Route::get('/admin/pembayaran-daftar-ulang/{pembayaranDaftarUlang}', [AdminPembayaranDaftarUlangController::class, 'show'])->name('admin.pembayaran-daftar-ulang.show');
         Route::put('/admin/pembayaran-daftar-ulang/{pembayaranDaftarUlang}', [AdminPembayaranDaftarUlangController::class, 'verify'])->name('admin.pembayaran-daftar-ulang.verify');
+        
+        // User management routes
+        Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+        Route::get('/users/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('users.show');
+        Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+        Route::post('/users/{user}/reset-password', [App\Http\Controllers\UserController::class, 'resetPassword'])->name('users.reset-password');
     });
 
     // Route untuk Telegram
